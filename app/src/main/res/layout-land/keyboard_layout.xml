@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/vertical_margin"
+    android:layout_marginLeft="@dimen/horizontal_margin"
+    android:layout_marginRight="@dimen/horizontal_margin"
+    android:layout_marginTop="@dimen/vertical_margin">
+
+    <org.d.ui.widget.AmountView
+        android:id="@+id/amount_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/amount_saved"
+            style="@style/Text.Large"
+            android:layout_centerVertical="true"
+            android:gravity="end"
+            android:minEms="5"
+            tools:text="£198.8"/>
+
+        <ImageView
+            android:id="@+id/back_space_button"
+            style="@style/amount_button"
+            android:layout_toEndOf="@id/amount_saved"
+            android:layout_toRightOf="@id/amount_saved"
+            android:contentDescription="@string/back_space"
+            app:srcCompat="@drawable/ic_backspace_36dp"/>
+
+        <ImageView
+            android:id="@+id/clear_button"
+            style="@style/amount_button"
+            android:layout_toEndOf="@id/back_space_button"
+            android:layout_toRightOf="@id/back_space_button"
+            android:contentDescription="@string/clear"
+            app:srcCompat="@drawable/ic_clear_36dp"/>
+
+    </org.d.ui.widget.AmountView>
+
+    <android.support.v7.widget.GridLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/amount_view"
+        android:layout_toRightOf="@id/amount_view"
+        app:alignmentMode="alignBounds"
+        app:columnCount="3"
+        app:columnOrderPreserved="true"
+        app:layout_columnWeight="3"
+        app:layout_rowWeight="4"
+        app:rowCount="4"
+        app:useDefaultMargins="true"
+        tools:showIn="@layout/keyboard_layout">
+
+        <include layout="@layout/keys_layout"/>
+
+    </android.support.v7.widget.GridLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/snackbar_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_add_white_24dp"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>
