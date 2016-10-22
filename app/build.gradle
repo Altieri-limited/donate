@@ -1,0 +1,127 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
+    }
+
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "24.0.2"
+    defaultConfig {
+        applicationId "org.d"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        jackOptions {
+            enabled true
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        dexOptions {
+            preDexLibraries = false
+            javaMaxHeapSize "4g"
+        }
+
+    }
+
+    compileOptions {
+        incremental true
+    }
+
+    /**
+     * Signing keys config.
+     */
+    signingConfigs {
+        debug {
+            storeFile file("ddebug.keystore")
+            keyAlias "ddebug"
+            storePassword "07477800086d!"
+            keyPassword "07477800086d!"
+        }
+        release {
+            storeFile file("drelease.keystore")
+            keyAlias "drelease"
+            storePassword "07477800086d!"
+            keyPassword "07477800086d!"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            renderscriptDebuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            versionNameSuffix "_dev"
+        }
+
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    def supportVersion = '25.0.0'
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:support-annotations:$supportVersion"
+    compile "com.android.support:gridlayout-v7:$supportVersion"
+
+    compile 'io.reactivex:rxandroid:0.24.0'
+
+    def buttern_knife = '8.0.1'
+    annotationProcessor "com.jakewharton:butterknife-compiler:$buttern_knife"
+    compile "com.jakewharton:butterknife:$buttern_knife"
+
+    def leak_canary = '1.4-beta2'
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leak_canary"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
+
+    //other dependencies for testing
+    def hamcrestVersion = '1.3'
+    testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
+    testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    testCompile "org.hamcrest:hamcrest-integration:$hamcrestVersion"
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
+    
+    compile 'com.github.bumptech.glide:glide:3.5.2'
+    compile 'com.jakewharton.timber:timber:4.3.1'
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+    compile 'com.google.firebase:firebase-auth:9.4.0'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.google.auto.value:auto-value:1.2'
+    annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.3-rc2'
+    provided 'com.google.auto.value:auto-value:1.2'
+}
+
+android.packagingOptions {
+    exclude 'LICENSE.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
+}

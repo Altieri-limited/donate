@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="text_size_large">40sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="keyboard_button_size">10dp</dimen>
+    <dimen name="default_button_dim">200dp</dimen>
+    <dimen name="default_key_button_dim">40dp</dimen>
+
+</resources>
