@@ -2,6 +2,7 @@ package org.d.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
@@ -54,6 +55,7 @@ public class AmountView extends RelativeLayout {
     }
 
     private void init() {
+        setGravity(Gravity.CENTER_VERTICAL);
         mCommand = NOT_READY;
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

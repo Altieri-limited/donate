@@ -3,19 +3,21 @@ package org.d.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import org.d.R;
 import org.d.data.PiggyBank;
-import org.d.observable.ObservableUtil;
+import org.d.model.MoneySaved;
+import org.d.util.ObservableUtil;
 import org.d.ui.widget.AmountView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscription;
 import rx.subjects.BehaviorSubject;
+import timber.log.Timber;
 
 public abstract class SavedMoneyBaseFragment extends BaseFragment {
 
@@ -30,7 +32,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     @NonNull
     protected PiggyBank mPiggyBank;
 
-    @BindView(R.id.fab)
+    @BindView(R.id.fab_menu)
     View mFAB;
 
     @BindView(R.id.amount_view)
@@ -68,6 +70,9 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         super.onResume();
         mOnStoreClickedSubscription = new ObservableUtil<Void>().asObservable(mOnStoreClickedSubject).subscribe(aVoid -> {
             mPiggyBank.store();
+            List<MoneySaved> all = mPiggyBank.listAll();
+            Timber.d(String.valueOf(all));
+
         });
         mOnAddClickedSubscription = new ObservableUtil<Double>().asObservable(mOnAddClickedSubject).subscribe(this::onMoneySavedChanged);
         mSendMoneySubscription = new ObservableUtil<Void>().asObservable(mOnSendMoneySubject).subscribe();
@@ -89,21 +94,6 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         mSendMoneySubscription.unsubscribe();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_save:
-                mOnStoreClickedSubject.onNext(null);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     protected abstract void onMoneySavedChanged(double moneySaved);
 
     protected void onMoneySavedChanged() {
@@ -116,15 +106,6 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
             mMoneySaved.clear();
         }
 
-        getActivity().invalidateOptionsMenu();
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        MenuItem saved = menu.findItem(R.id.action_save);
-        saved.setVisible(mPiggyBank.getMoneySaved() > 0);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.d.observable;
+package org.d.util;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
