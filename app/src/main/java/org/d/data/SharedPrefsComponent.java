@@ -1,8 +1,8 @@
-package org.d.network;
+package org.d.data;
 
 import org.d.AppModule;
-import org.d.data.SharedPrefsModule;
 import org.d.data.storage.AppStorageModule;
+import org.d.network.NetModule;
 import org.d.ui.activity.MainActivity;
 
 import javax.inject.Singleton;
@@ -10,7 +10,8 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules={AppStorageModule.class, AppModule.class, SharedPrefsModule.class, NetModule.class})
-public interface NetComponent {
+@Component(modules={AppStorageModule.class, AppModule.class, NetModule.class, SharedPrefsModule.class})
+public interface SharedPrefsComponent {
     void inject(MainActivity mainActivity);
 }
+

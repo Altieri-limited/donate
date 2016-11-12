@@ -16,7 +16,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class KeyboardFragment extends SavedMoneyBaseFragment {
-
     public static final double MAX_VALUE = 99999.99;
     private final char mDecimalSeparator;
     @NonNull private String mText = "";
@@ -83,7 +82,7 @@ public class KeyboardFragment extends SavedMoneyBaseFragment {
     }
 
     @OnClick(R.id.dot)
-    void onDotCliecked() {
+    void onDotClicked() {
         if (mText.indexOf(mDecimalSeparator) < 0) {
             mText += mDecimalSeparator;
         }

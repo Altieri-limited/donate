@@ -5,27 +5,32 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import org.d.App;
+import org.d.data.AppData;
 import org.d.model.MainTabs;
 import org.d.model.MoneySavedOption;
+import org.d.ui.fragment.CharitiesFragment;
 import org.d.ui.fragment.KeyboardFragment;
 import org.d.ui.fragment.SavedGridFragment;
 
 import java.util.ArrayList;
 
-class SectionsPagerAdapter extends FragmentPagerAdapter {
+import javax.inject.Inject;
 
-    private Context mContext;
+public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private App mApp;
+    @Inject AppData mAppData;
 
     SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mContext = context.getApplicationContext();
+        mApp = (App) context.getApplicationContext();
+        mApp.getDataComponent().inject(this);
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-            case 2:
             default:
                 ArrayList<MoneySavedOption> options = new ArrayList<>();
                 options.add(MoneySavedOption.create(0.1));
@@ -39,6 +44,8 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return SavedGridFragment.newInstance(options);
             case 1:
                 return KeyboardFragment.newInstance();
+            case 2:
+                return CharitiesFragment.newInstance();
         }
     }
 
@@ -49,6 +56,6 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mContext.getString(MainTabs.ARRAY[position].getTextId());
+        return mApp.getString(MainTabs.ARRAY[position].getTextId());
     }
 }

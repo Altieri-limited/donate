@@ -2,22 +2,25 @@ package org.d.data;
 
 import org.d.data.storage.AppStorage;
 import org.d.model.MoneySaved;
+import org.d.util.AppCalendar;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class PiggyBank {
-    private final AppStorage mAppStorage;
+    private AppStorage mAppStorage;
+    private AppCalendar mCalendar;
     private double mMoneySaved = 0;
 
-    public PiggyBank() {
-        mAppStorage = AppStorage.getInstance();
+    @Inject
+    public PiggyBank(AppStorage appStorage, AppCalendar calendar) {
+        mAppStorage = appStorage;
+        mCalendar = calendar;
     }
 
     public void store() {
-        GregorianCalendar calendar = new GregorianCalendar();
-        MoneySaved moneySaved = MoneySaved.create(mMoneySaved, calendar.getTimeInMillis());
-        mAppStorage.save(moneySaved);
+        mAppStorage.save(mMoneySaved, mCalendar.now());
         mMoneySaved = 0;
     }
 
@@ -31,6 +34,10 @@ public class PiggyBank {
 
     public double getMoneySaved() {
         return mMoneySaved;
+    }
+
+    public double getTotalPending() {
+        return mAppStorage.getTotalPending();
     }
 
     public List<MoneySaved> listAll() {
