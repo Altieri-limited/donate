@@ -2,6 +2,8 @@ package org.d;
 
 import android.app.Application;
 
+import org.d.util.AppCalendar;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -21,4 +23,10 @@ public class AppModule {
     Application providesApplication() {
         return mApplication;
     }
+
+    @Provides
+    AppCalendar providesCalendar() {
+        return new AppCalendar();
+    }
+
 }

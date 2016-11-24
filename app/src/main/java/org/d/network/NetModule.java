@@ -23,6 +23,10 @@ public class NetModule {
     private static final int TIMEOUT = 60; //seconds
     private String mBaseUrlTlycs;
 
+    public NetModule() {
+
+    }
+
     public NetModule(String baseUrlTlycs) {
         mBaseUrlTlycs = baseUrlTlycs;
     }

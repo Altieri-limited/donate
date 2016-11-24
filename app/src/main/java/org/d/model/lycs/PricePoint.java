@@ -20,4 +20,8 @@ abstract public class PricePoint implements Parcelable {
     public static TypeAdapter<PricePoint> typeAdapter(Gson gson) {
         return new AutoValue_PricePoint.GsonTypeAdapter(gson);
     }
+
+    public static PricePoint create(Double price, String iconURL, String color, Text text, String joiner) {
+        return new AutoValue_PricePoint(price, iconURL, color, text, joiner);
+    }
 }

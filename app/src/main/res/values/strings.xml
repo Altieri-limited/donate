@@ -20,4 +20,6 @@
     <string name="save">Save</string>
     <string name="back_space">Back space</string>
     <string name="clear">Clear</string>
+    <string name="send">Send</string>
+    <string name="calculator">Calculator</string>
 </resources>
