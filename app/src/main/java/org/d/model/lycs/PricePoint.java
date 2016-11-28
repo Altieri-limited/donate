@@ -24,4 +24,6 @@ abstract public class PricePoint implements Parcelable {
     public static PricePoint create(Double price, String iconURL, String color, Text text, String joiner) {
         return new AutoValue_PricePoint(price, iconURL, color, text, joiner);
     }
+
+    public abstract PricePoint withText(Text text);
 }

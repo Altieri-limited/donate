@@ -10,7 +10,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true" tools:showIn="@layout/keyboard_layout">
+    android:layout_alignParentRight="true" tools:showIn="@layout/fragment_keyboard_layout">
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab_menu"
@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_add_white_24dp"
-            fab:fab_label="@string/calculator"
-            fab:fab_size="mini"/>
+            fab:fab_size="mini"
+            fab:fab_label="@string/impact"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

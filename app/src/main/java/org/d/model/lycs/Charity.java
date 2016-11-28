@@ -32,4 +32,6 @@ public abstract class Charity implements Parcelable {
     public static Charity create(String name, String id, Double overhead, String infoURL, String donateURL, String logo, String organization, String recommendation, String numbers, String defaultText, List<PricePoint> pricePoints) {
         return new AutoValue_Charity(name, id, overhead, infoURL, donateURL, logo, organization, recommendation, numbers, defaultText, pricePoints);
     }
+
+    public abstract Charity withPricePoints(List<PricePoint> pricePoints);
 }

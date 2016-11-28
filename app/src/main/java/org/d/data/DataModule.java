@@ -14,8 +14,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public PiggyBank providePiggyBank(AppStorage appStorage, AppCalendar calendar) {
-        return new PiggyBank(appStorage, calendar);
+    public PiggyBank providePiggyBank(AppData appData, AppCalendar calendar) {
+        return new PiggyBank(appData, calendar);
     }
 
     @Provides

@@ -3,13 +3,7 @@ package org.d.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import io.realm.RealmObject;
-
-public class MoneySaved extends RealmObject implements Parcelable {
-    public final static class FIELDS {
-        public final static String MONEY = "Money";
-        final static String TIME = "Time";
-    }
+public class MoneySaved implements Parcelable {
     private double Money;
     private long Time;
 

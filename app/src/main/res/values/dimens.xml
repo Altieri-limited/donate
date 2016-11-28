@@ -9,5 +9,6 @@
     <dimen name="keyboard_button_size">10dp</dimen>
     <dimen name="default_button_dim">200dp</dimen>
     <dimen name="default_key_button_dim">40dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
 
 </resources>

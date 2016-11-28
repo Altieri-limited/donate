@@ -43,7 +43,7 @@ public class KeyboardFragment extends SavedMoneyBaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.keyboard_layout, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_keyboard_layout, container, false);
         setRetainInstance(true);
         return rootView;
     }
@@ -92,7 +92,7 @@ public class KeyboardFragment extends SavedMoneyBaseFragment {
     @Override
     protected void onMoneySavedChanged() {
         super.onMoneySavedChanged();
-        if (mPiggyBank.getMoneySaved() == 0) {
+        if (mPiggyBank.getMoneyToSave() == 0) {
             mText = "";
         }
     }

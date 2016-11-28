@@ -2,7 +2,7 @@
 <merge xmlns:tools="http://schemas.android.com/tools"
        xmlns:app="http://schemas.android.com/apk/res-auto"
        xmlns:android="http://schemas.android.com/apk/res/android"
-       tools:showIn="@layout/keyboard_layout">
+       tools:showIn="@layout/fragment_keyboard_layout">
 
     <org.d.ui.view.KeyButton
         android:id="@+id/button_1"
