@@ -21,5 +21,7 @@
     <string name="back_space">Back space</string>
     <string name="clear">Clear</string>
     <string name="send">Send</string>
-    <string name="calculator">Calculator</string>
+    <string name="impact">Impact</string>
+    <string name="title_activity_charity_impact">Impact</string>
+    <string name="action_settings">Settings</string>
 </resources>

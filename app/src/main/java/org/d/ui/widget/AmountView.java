@@ -8,11 +8,16 @@ import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.d.App;
 import org.d.Command;
 import org.d.R;
 import org.d.util.CompatUtil;
 
+import javax.inject.Inject;
+
 public class AmountView extends RelativeLayout {
+
+    @Inject CompatUtil mCompatUtil;
 
     public static final double INVALID = -1.;
     private TextView mAmountSaved;
@@ -35,7 +40,6 @@ public class AmountView extends RelativeLayout {
     };
 
     private final Command<Double> ACTIVE = amount -> mAmountSaved.setText(getContext().getString(R.string.money, amount));
-
     private Command<Double> mCommand;
 
     private final Command<Double> CLEARED = amount -> {
@@ -43,6 +47,7 @@ public class AmountView extends RelativeLayout {
         mCommand.exec(amount);
         setVisibility(VISIBLE);
     };
+
 
     public AmountView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,12 +60,13 @@ public class AmountView extends RelativeLayout {
     }
 
     private void init() {
+        ((App) getContext().getApplicationContext()).getAppComponent().inject(this);
         setGravity(Gravity.CENTER_VERTICAL);
         mCommand = NOT_READY;
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                CompatUtil.removeOnGlobalLayoutListener(AmountView.this, this);
+                mCompatUtil.removeOnGlobalLayoutListener(AmountView.this, this);
                 for (int i = 0; i < getChildCount(); ++i) {
                     View childAt = getChildAt(i);
                     if (childAt instanceof TextView) {

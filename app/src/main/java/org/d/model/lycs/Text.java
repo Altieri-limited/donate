@@ -21,4 +21,6 @@ public abstract class Text implements Parcelable {
     public static Text create(String single, String plural) {
         return new AutoValue_Text(single, plural);
     }
+
+    abstract public Text withPlural(String plural);
 }

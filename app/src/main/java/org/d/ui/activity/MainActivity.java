@@ -9,10 +9,15 @@ import org.d.App;
 import org.d.R;
 import org.d.data.DataComponent;
 import org.d.ui.HasComponent;
+import org.d.util.CompatUtil;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements HasComponent<DataComponent> {
+
+    @Inject CompatUtil mCompatUtil;
 
     public MainActivity() {
     }
@@ -31,10 +36,13 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Data
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(MainActivity.this, getSupportFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
 
+        ((App)getApplication()).getAppComponent().inject(this);
+
+        mCompatUtil.setStatusBarColor(this, R.color.colorPrimaryDark);
     }
 
     @Override
-    public DataComponent getComponent() {
+    public DataComponent getDataComponent() {
         return ((App) getApplication()).getDataComponent();
     }
 }

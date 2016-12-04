@@ -5,18 +5,20 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import org.d.R;
-import org.d.data.PiggyBank;
+import org.d.data.AppData;
 import org.d.data.DataComponent;
+import org.d.data.PiggyBank;
 import org.d.model.MoneySaved;
 import org.d.ui.widget.AmountView;
 import org.d.util.ObservableUtil;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observer;
 import rx.Subscription;
 import rx.subjects.BehaviorSubject;
 import timber.log.Timber;
@@ -31,6 +33,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     private Subscription mSendMoneySubscription;
 
     @Inject protected PiggyBank mPiggyBank;
+    @Inject protected AppData mAppData;
 
     @BindView(R.id.fab_menu)
     View mFAB;
@@ -85,8 +88,22 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         super.onResume();
         mOnStoreClickedSubscription = new ObservableUtil<Void>().asObservable(mOnStoreClickedSubject).subscribe(aVoid -> {
             mPiggyBank.store();
-            List<MoneySaved> all = mPiggyBank.listAll();
-            Timber.d(String.valueOf(all));
+            mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(ArrayList<MoneySaved> moneySaveds) {
+                    Timber.d(String.valueOf(moneySaveds));
+                }
+            });
         });
         mOnAddClickedSubscription = new ObservableUtil<Double>().asObservable(mOnAddClickedSubject).subscribe(this::onMoneySavedChanged);
         mSendMoneySubscription = new ObservableUtil<Void>().asObservable(mOnSendMoneySubject).subscribe();
@@ -95,7 +112,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     @Override
     protected void bind(View view) {
         super.bind(view);
-        if (mPiggyBank.getMoneySaved() != 0) {
+        if (mPiggyBank.getMoneyToSave() != 0) {
             onMoneySavedChanged();
         }
     }
@@ -111,7 +128,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     protected abstract void onMoneySavedChanged(double moneySaved);
 
     protected void onMoneySavedChanged() {
-        double moneySaved = mPiggyBank.getMoneySaved();
+        double moneySaved = mPiggyBank.getMoneyToSave();
         if (moneySaved > 0) {
             mMoneySaved.setAmount(moneySaved);
         } else {
@@ -122,6 +139,6 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putDouble(MONEY_SAVED, mPiggyBank.getMoneySaved());
+        outState.putDouble(MONEY_SAVED, mPiggyBank.getMoneyToSave());
     }
 }

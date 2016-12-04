@@ -3,8 +3,10 @@ package org.d.data;
 import android.support.annotation.NonNull;
 
 import org.d.data.storage.AppStorage;
-import org.d.model.lycs.Charities;
+import org.d.model.MoneySaved;
 import org.d.model.lycs.Charity;
+import org.d.model.lycs.PricePoint;
+import org.d.model.lycs.Text;
 import org.d.network.TheLifeYouCanSaveService;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -49,17 +52,49 @@ public class AppData {
                         mServiceTLYCS.getCharities()
                                 .subscribeOn(Schedulers.newThread())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .map(Charities::getCharities)
-                                .subscribe(charities1 -> {
-                                    mAppStorage.save(charities1);
-                                    subscriber.onNext(charities1);
+                                .map(charitiesObject -> (charitiesObject.getCharities() != null) ? charitiesObject.getCharities() : new ArrayList<Charity>())
+                                .subscribe(charitiesArray -> {
+                                    ArrayList<Charity> androidCharities = new ArrayList<Charity>(charities.size());
+                                    for (Charity charity: charitiesArray) {
+                                        if (charity.getPricePoints()!= null) {
+                                            List<PricePoint> pricePoints = new ArrayList<>(charity.getPricePoints().size());
+                                            for (PricePoint pp : charity.getPricePoints()) {
+                                                Text text = pp.getText();
+                                                PricePoint pricePoint;
+                                                if (text != null && text.getPlural() != null) {
+                                                    pricePoint = pp.withText(text.withPlural(text.getPlural().replace(" * ", " %1$s ")));
+                                                } else {
+                                                    pricePoint = pp.withText(Text.create("", ""));
+                                                }
+                                                pricePoints.add(pricePoint);
+                                            }
+                                            androidCharities.add(charity.withPricePoints(pricePoints));
+                                        }
+                                    }
+
+                                    mAppStorage.save(androidCharities);
+                                    subscriber.onNext(androidCharities);
+                                    subscriber.onCompleted();
                                 });
                     }
                 }
             });
         } else {
             subscriber.onNext(mCharities);
+            subscriber.onCompleted();
         }
     }
 
+
+    public void save(double moneySaved, long now) {
+        mAppStorage.save(moneySaved, now);
+    }
+
+    public Observable<Double> getTotalPending() {
+        return mAppStorage.getTotalPending();
+    }
+
+    public void listSavings(Observer<? super ArrayList<MoneySaved>> subscriber) {
+        mAppStorage.listSavings(subscriber);
+    }
 }

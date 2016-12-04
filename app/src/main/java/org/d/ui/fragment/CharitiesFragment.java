@@ -1,5 +1,6 @@
 package org.d.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,8 @@ import org.d.App;
 import org.d.R;
 import org.d.data.AppData;
 import org.d.model.lycs.Charity;
+import org.d.ui.activity.CharityImpactActivity;
+import org.d.util.ObservableUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +24,24 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
+import rx.Subscription;
+import rx.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class CharitiesFragment extends BaseFragment {
 
     public static final int NUM_COLUMNS = 3;
-    private static final String CHARITIES = "charities";
     private ArrayList<Charity> mCharities;
+    @Inject AppData mAppData;
     @Inject
-    AppData mAppData;
+    BehaviorSubject<Charity> mOnCharityClickSubject;
+    @Inject
+    ObservableUtil<Charity> mObservableUtil;
+    private Subscription mOnCharityClickSubscription;
 
     @BindView(R.id.charities_grid)
     RecyclerView mCharitiesGrid;
+    private CharityGridAdapter mAdapter;
 
     public CharitiesFragment() {
     }
@@ -46,14 +55,16 @@ public class CharitiesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.charities_grid_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_charities_grid, container, false);
         bind(rootView);
         ((App) getActivity().getApplication()).getDataComponent().inject(this);
+        mAdapter = new CharityGridAdapter();
 
         mAppData.getCharities(new Observer<List<Charity>>() {
             @Override
             public void onCompleted() {
-                mCharitiesGrid.setAdapter(new CharityGridAdapter());
+                mCharitiesGrid.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -74,6 +85,22 @@ public class CharitiesFragment extends BaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mOnCharityClickSubscription = mObservableUtil.asObservable(mOnCharityClickSubject).subscribe(charity -> {
+            Intent intent = new Intent(getActivity(), CharityImpactActivity.class);
+            intent.putExtra(CharityImpactActivity.CHARITY_ARG, charity);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mOnCharityClickSubscription.unsubscribe();
+    }
+
     class CharityGridAdapter extends RecyclerView.Adapter {
 
         CharityGridAdapter() {
@@ -81,7 +108,7 @@ public class CharitiesFragment extends BaseFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.charity_card_view, parent, false);
+            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.card_view_charity, parent, false);
             return new CharityViewHolder(itemView);
         }
 
@@ -102,15 +129,21 @@ public class CharitiesFragment extends BaseFragment {
             @BindView(R.id.charity_name)
             TextView mTextView;
             View mItemView;
+            private Charity mCharity;
 
             CharityViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
                 mItemView = itemView;
+                mItemView.setOnClickListener(view -> {});
             }
 
             void bind(Charity charity) {
+                mCharity = charity;
                 mTextView.setText(charity.getName());
+                mItemView.setOnClickListener(view -> {
+                    mOnCharityClickSubject.onNext(mCharity);
+                });
             }
 
         }

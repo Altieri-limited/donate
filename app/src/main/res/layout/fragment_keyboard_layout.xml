@@ -50,9 +50,6 @@
     </org.d.ui.widget.AmountView>
 
     <android.support.v7.widget.GridLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/amount_view"
@@ -63,9 +60,9 @@
         app:layout_rowWeight="4"
         app:rowCount="4"
         app:useDefaultMargins="true"
-        tools:showIn="@layout/keyboard_layout">
+        tools:showIn="@layout/fragment_keyboard_layout">
 
-        <include layout="@layout/keys_layout"/>
+        <include layout="@layout/include_keys_layout"/>
 
     </android.support.v7.widget.GridLayout>
 

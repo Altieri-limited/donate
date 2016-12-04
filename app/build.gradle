@@ -96,9 +96,11 @@ dependencies {
     compile 'com.google.dagger:dagger:2.7'
     provided 'javax.annotation:jsr250-api:1.0'
 
+    apt 'com.gabrielittner.auto.value:auto-value-with:1.0.0'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    def supportVersion = '25.0.0'
+    def supportVersion = '25.0.1'
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
     compile "com.android.support:cardview-v7:$supportVersion"

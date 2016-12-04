@@ -8,5 +8,10 @@ import rx.Observable;
 
 public interface DataService {
     Observable<ArrayList<Charity>> charities();
+
     void storeCharity(Charity charity);
+
+    void storeMoneySaved(double money, long timeInMillis);
+
+    Observable<Double> getTotalPending();
 }

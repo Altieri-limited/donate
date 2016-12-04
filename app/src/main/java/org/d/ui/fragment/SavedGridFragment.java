@@ -45,7 +45,7 @@ public class SavedGridFragment extends SavedMoneyBaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.options_grid_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_options_grid, container, false);
         bind(rootView);
         mMoneySavedOptions = getArguments().getParcelableArrayList(MONEY_SAVED_OPTION_ARGS);
         mOptionsGrid.setAdapter(new OptionsGridAdapter());
@@ -62,7 +62,7 @@ public class SavedGridFragment extends SavedMoneyBaseFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.rounded_option_view, parent, false);
+            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.view_rounded_option, parent, false);
             return new OptionViewHolder(itemView);
         }
 

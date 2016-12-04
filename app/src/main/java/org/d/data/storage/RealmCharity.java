@@ -9,10 +9,11 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class RealmCharity extends RealmObject {
     private String mName;
-    private String mId;
+    @PrimaryKey private String mId;
     private Double mOverhead;
     private String mInfoURL;
     private String mDonateURL;
@@ -27,9 +28,8 @@ public class RealmCharity extends RealmObject {
 
     }
 
-    public void  set(String name, String id, Double overhead, String infoURL, String donateURL, String logo, String organization, String recommendation, String numbers, String defaultText, List<PricePoint> pricePoints) {
+    public void  set(String name, Double overhead, String infoURL, String donateURL, String logo, String organization, String recommendation, String numbers, String defaultText, List<PricePoint> pricePoints) {
         mName = name;
-        mId = id;
         mOverhead = overhead;
         mInfoURL = infoURL;
         mDonateURL = donateURL;

@@ -24,6 +24,7 @@ public class App extends Application {
     public SharedPrefsComponent mSharedPrefsComponent;
     public AppStorageComponent mAppStorageComponent;
     private DataComponent mDataComponent;
+    private AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
@@ -35,10 +36,12 @@ public class App extends Application {
         mNetComponent = DaggerNetComponent.builder()
                 // list of modules that are part of this component need to be created here too
                 .netModule(netModule)
+                .appModule(new AppModule(this))
                 .build();
 
         mSharedPrefsComponent = DaggerSharedPrefsComponent.builder()
                 .sharedPrefsModule(new SharedPrefsModule())
+                .appModule(new AppModule(this))
                 .netModule(netModule)
                 .build();
 
@@ -53,6 +56,11 @@ public class App extends Application {
                 .netModule(netModule)
                 .build();
 
+        mAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .netModule(netModule)
+                .build();
+
     }
 
     public NetComponent getNetComponent() {
@@ -63,4 +71,7 @@ public class App extends Application {
         return mDataComponent;
     }
 
+    public AppComponent getAppComponent() {
+        return mAppComponent;
+    }
 }
