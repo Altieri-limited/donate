@@ -2,11 +2,25 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/impact_description"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="@dimen/horizontal_margin"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/impact_image"
+            android:layout_width="@dimen/impact_image_size"
+            android:layout_height="@dimen/impact_image_size"/>
+
+        <TextView
+            android:id="@+id/impact_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -44,7 +44,7 @@ public final class RealmObservable {
 
     /**
      *
-     * @param function taking realm returning object of type <T>
+     * @param function taking realm returning object of type <T extends Number>
      * @param <T> object of type Number
      * @return Observable
      */

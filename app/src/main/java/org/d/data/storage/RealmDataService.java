@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Observer;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -40,26 +40,40 @@ public class RealmDataService implements DataService {
     }
 
     @Override
-    public void storeMoneySaved(double money, long timeInMillis) {
-        RealmObservable.object(realm -> {
+    public void storeMoneySaved(double money, long timeInMillis, Observer<Void> observer) {
+        Observable<RealmMoneySaved> observable = RealmObservable.object(realm -> {
             RealmMoneySaved moneySaved = realm.createObject(RealmMoneySaved.class);
             moneySaved.setMoney(money);
             moneySaved.setTime(timeInMillis);
             return moneySaved;
         });
+        observable.subscribeOn(Schedulers.io())
+                .subscribe(new Observer<RealmMoneySaved>() {
+                    @Override
+                    public void onCompleted() {
+                        observable.doOnCompleted(null);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        observer.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(RealmMoneySaved realmMoneySaved) {
+                        observer.onNext(null);
+                    }
+                });
+
     }
 
     public void storeCharities(ArrayList<Charity> charities) {
-        RealmObservable.call(realm -> {
-            realm.delete(RealmCharity.class);
-            ArrayList<RealmCharity> array = new ArrayList<>(charities.size());
-            for (Charity charity: charities) {
-                RealmCharity realmCharity = fromCharity(realm, charity);
-                array.add(realmCharity);
-            }
-            realm.copyToRealm(array);
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        for (Charity charity: charities) {
+            storeCharity(charity);
+        }
+
     }
+
 
     @NonNull
     private RealmCharity fromCharity(Realm realm, Charity charity) {
@@ -100,7 +114,7 @@ public class RealmDataService implements DataService {
     }
 
     private MoneySaved fromRealm(RealmMoneySaved moneSaved) {
-        return null;
+        return new MoneySaved(moneSaved.getMoney(), moneSaved.getTime());
     }
 
 }

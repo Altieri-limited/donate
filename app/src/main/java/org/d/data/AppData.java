@@ -7,7 +7,7 @@ import org.d.model.MoneySaved;
 import org.d.model.lycs.Charity;
 import org.d.model.lycs.PricePoint;
 import org.d.model.lycs.Text;
-import org.d.network.TheLifeYouCanSaveService;
+import org.d.network.tlycs.TheLifeYouCanSaveService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class AppData {
                                                 Text text = pp.getText();
                                                 PricePoint pricePoint;
                                                 if (text != null && text.getPlural() != null) {
-                                                    pricePoint = pp.withText(text.withPlural(text.getPlural().replace(" * ", " %1$s ")));
+                                                    pricePoint = pp.withText(text.withPlural(text.getPlural().replace(" $1 ", " %s ")));
                                                 } else {
                                                     pricePoint = pp.withText(Text.create("", ""));
                                                 }
@@ -86,8 +86,8 @@ public class AppData {
     }
 
 
-    public void save(double moneySaved, long now) {
-        mAppStorage.save(moneySaved, now);
+    public void save(double moneySaved, long now, Observer<Void> observer) {
+        mAppStorage.save(moneySaved, now, observer);
     }
 
     public Observable<Double> getTotalPending() {

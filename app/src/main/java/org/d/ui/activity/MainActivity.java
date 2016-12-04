@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements HasComponent<Data
     }
 
     @Override
-    public DataComponent getDataComponent() {
+    public DataComponent getComponent() {
         return ((App) getApplication()).getDataComponent();
     }
 }

@@ -1,7 +1,7 @@
 package org.d.data;
 
 import org.d.data.storage.AppStorage;
-import org.d.network.TheLifeYouCanSaveService;
+import org.d.network.tlycs.TheLifeYouCanSaveService;
 import org.d.util.AppCalendar;
 
 import javax.inject.Singleton;

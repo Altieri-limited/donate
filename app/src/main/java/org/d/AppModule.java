@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 
 @Module
 public class AppModule {
@@ -46,8 +47,23 @@ public class AppModule {
     }
 
     @Provides
-    BehaviorSubject<Charity> providesBehaviorSubject() {
+    BehaviorSubject<Double> providesBehaviorSubjectDouble() {
         return BehaviorSubject.create();
+    }
+
+    @Provides
+    PublishSubject<Double> providesPublishSubjectDouble() {
+        return PublishSubject.create();
+    }
+
+    @Provides
+    BehaviorSubject<Charity> providesBehaviorSubjectCharity() {
+        return BehaviorSubject.create();
+    }
+
+    @Provides
+    PublishSubject<Charity> providesPublishSubjectCharity() {
+        return PublishSubject.create();
     }
 
     @Provides
