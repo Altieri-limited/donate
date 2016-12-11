@@ -19,8 +19,9 @@ public abstract class Charity implements Parcelable {
     @Nullable public abstract @SerializedName("infoURL") String getInfoURL();
     @Nullable public abstract @SerializedName("donateURL") String getDonateURL();
     @Nullable public abstract @SerializedName("logo") String getLogo();
-    @Nullable public abstract @SerializedName("organization") String getorganization();
+    @Nullable public abstract @SerializedName("organization") String getOrganization();
     @Nullable public abstract @SerializedName("recommendation") String getRecommendation();
+    @Nullable public abstract @SerializedName("evidence") String getEvidence();
     @Nullable public abstract @SerializedName("numbers") String getNumbers();
     @Nullable public abstract @SerializedName("defaultText") String getDefaultText();
     @Nullable public abstract @SerializedName("pricePoints") List<PricePoint> getPricePoints();
@@ -29,8 +30,8 @@ public abstract class Charity implements Parcelable {
         return new AutoValue_Charity.GsonTypeAdapter(gson);
     }
 
-    public static Charity create(String name, String id, Double overhead, String infoURL, String donateURL, String logo, String organization, String recommendation, String numbers, String defaultText, List<PricePoint> pricePoints) {
-        return new AutoValue_Charity(name, id, overhead, infoURL, donateURL, logo, organization, recommendation, numbers, defaultText, pricePoints);
+    public static Charity create(String name, String id, Double overhead, String infoURL, String donateURL, String logo, String organization, String recommendation, String evidence, String numbers, String defaultText, List<PricePoint> pricePoints) {
+        return new AutoValue_Charity(name, id, overhead, infoURL, donateURL, logo, organization, recommendation, evidence, numbers, defaultText, pricePoints);
     }
 
     public abstract Charity withPricePoints(List<PricePoint> pricePoints);

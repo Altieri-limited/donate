@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="org.d.ui.activity.MainActivity">
 
     <android.support.design.widget.TextInputLayout
@@ -24,13 +24,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/impact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/money_layout"/>
-
-    <TextView
-        android:id="@+id/charity_description"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/impact_list"/>
+        android:layout_below="@id/money_layout"/>
 
 </RelativeLayout>

@@ -21,6 +21,7 @@ public class RealmCharity extends RealmObject {
     private String mOrganization;
     private String mDefaultText;
     private String mRecommendation;
+    private String mEvidence;
     private String mNumbers;
     private RealmList<RealmPricePoint> mPricePoints;
 
@@ -76,6 +77,8 @@ public class RealmCharity extends RealmObject {
         return mRecommendation;
     }
 
+    public String getEvidence() { return mEvidence; }
+
     public String getNumbers() {
         return mNumbers;
     }
@@ -88,4 +91,5 @@ public class RealmCharity extends RealmObject {
         }
         return pricePoints;
     }
+
 }

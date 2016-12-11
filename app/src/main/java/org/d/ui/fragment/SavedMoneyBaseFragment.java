@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observer;
 import rx.Subscription;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
@@ -68,41 +69,43 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Observer<Void> observer = new Observer<Void>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+                mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<MoneySaved> moneySaveds) {
+                        Timber.d(String.valueOf(moneySaveds));
+                    }
+                });
+                onMoneySavedChanged();
+            }
+        };
+
+        BehaviorSubject<Void> subject = BehaviorSubject.create();
+        mStoreOperationSubscription = subject.subscribe(observer);
+
         mOnStoreClickedSubscription = RxView.clicks(mSaveFab).asObservable().subscribe(aVoid -> {
-            Observer<Void> observer = new Observer<Void>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(Void aVoid) {
-                    mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(ArrayList<MoneySaved> moneySaveds) {
-                            Timber.d(String.valueOf(moneySaveds));
-                        }
-                    });
-                    onMoneySavedChanged();
-                }
-            };
-            PublishSubject<Void> subject = PublishSubject.create();
-            mStoreOperationSubscription = subject.subscribe(observer);
             mPiggyBank.store(subject);
         });
 

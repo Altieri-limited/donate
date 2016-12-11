@@ -11,6 +11,7 @@ import org.d.R;
 import org.d.data.DataComponent;
 import org.d.model.lycs.Charity;
 import org.d.ui.HasComponent;
+import org.d.ui.fragment.CharityDetailsFragment;
 import org.d.ui.fragment.CharityImpactFragment;
 
 import butterknife.ButterKnife;
@@ -25,7 +26,7 @@ public class CharityImpactActivity extends BaseActivity implements HasComponent<
         super.onCreate(savedInstanceState);
         ((App)getApplication()).getAppComponent().inject(this);
 
-        setContentView(R.layout.activity_charity_impact);
+        setContentView(R.layout.activity_charity);
         ButterKnife.bind(this);
         Bundle args = getIntent().getExtras();
         mCharity = args.getParcelable(CHARITY_ARG);
@@ -39,7 +40,8 @@ public class CharityImpactActivity extends BaseActivity implements HasComponent<
         });
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.content, CharityImpactFragment.newInstance(mCharity));
+        ft.add(R.id.impact_list_fragment, CharityImpactFragment.newInstance(mCharity));
+        ft.add(R.id.charity_details, CharityDetailsFragment.newInstance(mCharity));
         ft.commit();
     }
 

@@ -91,6 +91,7 @@ public class RealmDataService implements DataService {
                 realmCharity.getOverhead(), realmCharity.getInfoURL(),
                 realmCharity.getDonateURL(), realmCharity.getLogo(),
                 realmCharity.getDefaultText(), realmCharity.getRecommendation(),
+                realmCharity.getEvidence(),
                 realmCharity.getNumbers(), realmCharity.getDefaultText(),
                 realmCharity.getPricePoints());
     }

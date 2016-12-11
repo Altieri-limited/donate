@@ -6,6 +6,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:textAppearance">@style/Text</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,6 +24,18 @@
         <item name="android:textColor">@color/default_text_color</item>
     </style>
 
+    <style name="Text.Large">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="Text.Dark">
+        <item name="android:textColor">@color/dark_text_color</item>
+    </style>
+
+    <style name="Text.Dark.Large">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
     <style name="keyboard">
         <item name="layout_columnSpan">1</item>
         <item name="layout_rowSpan">1</item>
@@ -33,9 +46,6 @@
         <item name="layout_rowWeight">1</item>
     </style>
 
-    <style name="Text.Large">
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
     <style name="amount_button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

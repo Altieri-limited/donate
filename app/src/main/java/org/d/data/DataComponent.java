@@ -6,6 +6,7 @@ import org.d.network.NetModule;
 import org.d.ui.activity.MainActivity;
 import org.d.ui.activity.SectionsPagerAdapter;
 import org.d.ui.fragment.CharitiesFragment;
+import org.d.ui.fragment.CharityDetailsFragment;
 import org.d.ui.fragment.CharityImpactFragment;
 import org.d.ui.fragment.SavedMoneyBaseFragment;
 
@@ -20,6 +21,8 @@ public interface DataComponent {
     void inject(SavedMoneyBaseFragment fragment);
     void inject(CharitiesFragment fragment);
     void inject(CharityImpactFragment fragment);
+    void inject(CharityDetailsFragment fragment);
+
     void inject(SectionsPagerAdapter adapter);
 
 }

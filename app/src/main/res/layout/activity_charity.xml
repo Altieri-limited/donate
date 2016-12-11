@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/white"
     tools:context="org.d.ui.activity.CharityImpactActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -33,7 +34,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/include_content_charity_impact"/>
+    <include layout="@layout/include_content_charity"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

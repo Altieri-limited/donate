@@ -11,6 +11,7 @@
     <dimen name="default_button_dim">200dp</dimen>
     <dimen name="default_key_button_dim">40dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="impact_image_size">48dp</dimen>
+    <dimen name="impact_image_size">32dp</dimen>
+    <dimen name="elevation">6dp</dimen>
 
 </resources>
