@@ -7,13 +7,14 @@ public class MoneySaved implements Parcelable {
     private double Money;
     private long Time;
 
-    public MoneySaved() {
-
-    }
-
     protected MoneySaved(Parcel in) {
         Money = in.readDouble();
         Time = in.readLong();
+    }
+
+    public MoneySaved(double money, long time) {
+        Money = money;
+        Time = time;
     }
 
     @Override

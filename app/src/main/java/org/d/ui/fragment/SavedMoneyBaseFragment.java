@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.jakewharton.rxbinding.view.RxView;
+
 import org.d.R;
 import org.d.data.AppData;
 import org.d.data.DataComponent;
@@ -20,14 +22,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observer;
 import rx.Subscription;
-import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
 public abstract class SavedMoneyBaseFragment extends BaseFragment {
     private static final String MONEY_SAVED = "MONEY_SAVED";
-    protected BehaviorSubject<Void> mOnStoreClickedSubject;
-    protected BehaviorSubject<Double> mOnAddClickedSubject;
-    protected BehaviorSubject<Void> mOnSendMoneySubject;
+    @Inject protected PublishSubject<Double> mOnAddClickedSubject;
     private Subscription mOnStoreClickedSubscription;
     private Subscription mOnAddClickedSubscription;
     private Subscription mSendMoneySubscription;
@@ -35,37 +35,24 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     @Inject protected PiggyBank mPiggyBank;
     @Inject protected AppData mAppData;
 
-    @BindView(R.id.fab_menu)
-    View mFAB;
+    @BindView(R.id.fab_save)
+    View mSaveFab;
+
+    @BindView(R.id.fab_send)
+    View mSendFab;
 
     @BindView(R.id.amount_view)
     AmountView mMoneySaved;
-
-    @OnClick(R.id.fab_save)
-    void onSave() {
-        mPiggyBank.store();
-    }
-
-    @OnClick(R.id.fab_send)
-    void onSend() {
-        Timber.d("sending");
-    }
-
-    @OnClick(R.id.fab_calc)
-    void onCalc() {
-        Timber.d("calc");
-    }
+    private Subscription mStoreOperationSubscription;
 
     public SavedMoneyBaseFragment() {
-        mOnStoreClickedSubject = BehaviorSubject.create();
-        mOnAddClickedSubject = BehaviorSubject.create();
-        mOnSendMoneySubject = BehaviorSubject.create();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getComponent(DataComponent.class).inject(this);
+
         if (savedInstanceState != null) {
             double moneySaved = savedInstanceState.getDouble(MONEY_SAVED);
             mPiggyBank.set(moneySaved);
@@ -78,17 +65,11 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         onMoneySavedChanged();
     }
 
-    @OnClick(R.id.fab_save)
-    void onSendMoney() {
-        mOnSendMoneySubject.onNext(null);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        mOnStoreClickedSubscription = new ObservableUtil<Void>().asObservable(mOnStoreClickedSubject).subscribe(aVoid -> {
-            mPiggyBank.store();
-            mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
+        mOnStoreClickedSubscription = RxView.clicks(mSaveFab).asObservable().subscribe(aVoid -> {
+            Observer<Void> observer = new Observer<Void>() {
                 @Override
                 public void onCompleted() {
 
@@ -100,13 +81,36 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onNext(ArrayList<MoneySaved> moneySaveds) {
-                    Timber.d(String.valueOf(moneySaveds));
+                public void onNext(Void aVoid) {
+                    mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(ArrayList<MoneySaved> moneySaveds) {
+                            Timber.d(String.valueOf(moneySaveds));
+                        }
+                    });
+                    onMoneySavedChanged();
                 }
-            });
+            };
+            PublishSubject<Void> subject = PublishSubject.create();
+            mStoreOperationSubscription = subject.subscribe(observer);
+            mPiggyBank.store(subject);
         });
+
+        mSendMoneySubscription = RxView.clicks(mSendFab).asObservable().subscribe(aVoid -> {
+            Timber.d("send");
+        });
+
         mOnAddClickedSubscription = new ObservableUtil<Double>().asObservable(mOnAddClickedSubject).subscribe(this::onMoneySavedChanged);
-        mSendMoneySubscription = new ObservableUtil<Void>().asObservable(mOnSendMoneySubject).subscribe();
     }
 
     @Override
@@ -123,6 +127,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         mOnAddClickedSubscription.unsubscribe();
         mOnStoreClickedSubscription.unsubscribe();
         mSendMoneySubscription.unsubscribe();
+        mStoreOperationSubscription.unsubscribe();
     }
 
     protected abstract void onMoneySavedChanged(double moneySaved);

@@ -51,8 +51,8 @@ public class AppStorage {
         return observable;
     }
 
-    public void save(double saved, long timeInMillis) {
-        mRealmDataService.storeMoneySaved(saved, timeInMillis);
+    public void save(double saved, long timeInMillis, Observer<Void> observer) {
+        mRealmDataService.storeMoneySaved(saved, timeInMillis, observer);
     }
 
     public void getCharities(Observer<? super ArrayList<Charity>> subscriber) {

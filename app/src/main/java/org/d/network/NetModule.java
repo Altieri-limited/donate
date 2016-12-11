@@ -6,6 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ryanharter.auto.value.gson.AutoValueGsonTypeAdapterFactory;
 
+import org.d.network.tlycs.TheLifeYouCanSaveHelper;
+import org.d.network.tlycs.TheLifeYouCanSaveService;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -49,6 +52,12 @@ public class NetModule {
         return theLifeYouCanSaveService;
     }
 
+    @Provides
+    @Singleton
+    public TheLifeYouCanSaveHelper provideTheLifeYouCanSaveHelper() {
+        return new TheLifeYouCanSaveHelper(mBaseUrlTlycs);
+    }
+
     @NonNull
     @Provides
     @Singleton
@@ -68,4 +77,6 @@ public class NetModule {
                 .client(okHttpClient);
         return retrofitBuilder;
     }
+
+
 }

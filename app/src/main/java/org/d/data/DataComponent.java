@@ -6,6 +6,7 @@ import org.d.network.NetModule;
 import org.d.ui.activity.MainActivity;
 import org.d.ui.activity.SectionsPagerAdapter;
 import org.d.ui.fragment.CharitiesFragment;
+import org.d.ui.fragment.CharityImpactFragment;
 import org.d.ui.fragment.SavedMoneyBaseFragment;
 
 import javax.inject.Singleton;
@@ -18,5 +19,7 @@ public interface DataComponent {
     void inject(MainActivity activity);
     void inject(SavedMoneyBaseFragment fragment);
     void inject(CharitiesFragment fragment);
+    void inject(CharityImpactFragment fragment);
     void inject(SectionsPagerAdapter adapter);
+
 }

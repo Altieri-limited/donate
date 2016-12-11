@@ -1,4 +1,4 @@
-package org.d.network;
+package org.d.network.tlycs;
 
 import org.d.model.lycs.Charities;
 

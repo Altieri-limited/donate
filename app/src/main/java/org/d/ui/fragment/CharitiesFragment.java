@@ -25,23 +25,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 import rx.Subscription;
-import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
 public class CharitiesFragment extends BaseFragment {
 
     public static final int NUM_COLUMNS = 3;
     private ArrayList<Charity> mCharities;
-    @Inject AppData mAppData;
-    @Inject
-    BehaviorSubject<Charity> mOnCharityClickSubject;
-    @Inject
-    ObservableUtil<Charity> mObservableUtil;
+    private CharityGridAdapter mAdapter;
     private Subscription mOnCharityClickSubscription;
 
-    @BindView(R.id.charities_grid)
-    RecyclerView mCharitiesGrid;
-    private CharityGridAdapter mAdapter;
+    @Inject AppData mAppData;
+    @Inject PublishSubject<Charity> mOnCharityClickSubject;
+    @Inject ObservableUtil<Charity> mObservableUtil;
+
+    @BindView(R.id.charities_grid) RecyclerView mCharitiesGrid;
 
     public CharitiesFragment() {
     }
