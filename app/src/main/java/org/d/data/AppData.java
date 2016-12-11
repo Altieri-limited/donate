@@ -48,6 +48,7 @@ public class AppData {
                     if (charities.size() > 0) {
                         mCharities = charities;
                         subscriber.onNext(mCharities);
+                        subscriber.onCompleted();
                     } else {
                         mServiceTLYCS.getCharities()
                                 .subscribeOn(Schedulers.newThread())
@@ -62,7 +63,7 @@ public class AppData {
                                                 Text text = pp.getText();
                                                 PricePoint pricePoint;
                                                 if (text != null && text.getPlural() != null) {
-                                                    pricePoint = pp.withText(text.withPlural(text.getPlural().replace(" $1 ", " %s ")));
+                                                    pricePoint = pp.withText(text.withPlural(text.getPlural().replace(" $1 ", " %s ").replace(" * ", " %s ")));
                                                 } else {
                                                     pricePoint = pp.withText(Text.create("", ""));
                                                 }

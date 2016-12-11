@@ -5,8 +5,9 @@
     <color name="colorAccent">#DD2C00</color>
     <color name="white">#ffffff</color>
     <color name="red">#ff0000</color>
-    <color name="default_text_color">@color/white</color>
     <color name="green">#00ff00</color>
     <color name="yellow">#FFFF00</color>
-    <color name="pink">#FF7722</color>
+    <color name="black">#000000</color>
+    <color name="default_text_color">@color/white</color>
+    <color name="dark_text_color">@color/black</color>
 </resources>

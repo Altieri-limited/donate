@@ -18,9 +18,8 @@
             tools:src="@drawable/ic_clear_36dp"/>
 
         <TextView
+            style="@style/Text"
             android:id="@+id/charity_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             tools:text="name"/>
 

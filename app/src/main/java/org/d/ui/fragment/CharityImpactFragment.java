@@ -1,5 +1,7 @@
 package org.d.ui.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.d.R;
 import org.d.data.DataComponent;
@@ -25,8 +28,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class CharityImpactFragment extends BaseFragment {
     private static final String CHARITY_ARG = "charity";
@@ -112,7 +117,7 @@ public class CharityImpactFragment extends BaseFragment {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             @BindView(R.id.impact_description) TextView mImpactDescription;
-            @BindView(R.id.impact_image) ImageView mImpactimage;
+            @BindDimen(R.dimen.impact_image_size) int mImpactImageSize;
 
             View mItemView;
             private PricePoint mPricePoint;
@@ -126,10 +131,19 @@ public class CharityImpactFragment extends BaseFragment {
 
             void bind(PricePoint pricePoint) {
                 mPricePoint = pricePoint;
-                Glide.with(getContext()).load(mTLYCSHelper.getImageUrl(mPricePoint.getIconURL())).into(mImpactimage);
+                Glide.with(getContext()).load(mTLYCSHelper.getImageUrl(mPricePoint.getIconURL())).asBitmap().into(new SimpleTarget<Bitmap>(mImpactImageSize,mImpactImageSize) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                        mImpactDescription.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(mImpactDescription.getResources(),resource), null, null);
+                    }
+                });
                 int amount = (int) (mMoney / pricePoint.getPrice());
                 if (amount > 2) {
-                    mImpactDescription.setText(String.format(mPricePoint.getText().getPlural(), amount));
+                    try {
+                        mImpactDescription.setText(String.format(mPricePoint.getText().getPlural(), amount));
+                    } catch (Exception e) {
+                        Timber.e(new IllegalArgumentException(String.format(mPricePoint.getText().getPlural())));
+                    }
                 } else if (amount > 1) {
                     mImpactDescription.setText(mPricePoint.getText().getSingle());
                 } else {
