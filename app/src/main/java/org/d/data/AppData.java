@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class AppData {
@@ -95,7 +96,7 @@ public class AppData {
         return mAppStorage.getTotalPending();
     }
 
-    public void listSavings(Observer<? super ArrayList<MoneySaved>> subscriber) {
+    public void listSavings(Action1<ArrayList<MoneySaved>> subscriber) {
         mAppStorage.listSavings(subscriber);
     }
 }

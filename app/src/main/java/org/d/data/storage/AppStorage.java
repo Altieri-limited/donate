@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class AppStorage {
@@ -26,27 +27,12 @@ public class AppStorage {
         return mRealmDataService.getTotalPending();
     }
 
-    public Observable<ArrayList<MoneySaved>> listSavings(Observer<? super ArrayList<MoneySaved>> subscriber) {
+    public Observable<ArrayList<MoneySaved>> listSavings(Action1<ArrayList<MoneySaved>> subscriber) {
         Observable<ArrayList<MoneySaved>> observable = mRealmDataService.savings();
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ArrayList<MoneySaved>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ArrayList<MoneySaved> savings) {
-                        subscriber.onNext(savings);
-                    }
-                });
+                .subscribe(subscriber);
         return observable;
     }
 

@@ -12,7 +12,6 @@ import org.d.R;
 import org.d.data.AppData;
 import org.d.data.DataComponent;
 import org.d.data.PiggyBank;
-import org.d.model.MoneySaved;
 import org.d.model.lycs.Charity;
 import org.d.ui.activity.CharitiesActivity;
 import org.d.ui.activity.MoneyActivities;
@@ -84,22 +83,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
 
             @Override
             public void onNext(Void aVoid) {
-                mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ArrayList<MoneySaved> moneySaved) {
-                        Timber.d(String.valueOf(moneySaved));
-                    }
-                });
+                mAppData.listSavings(moneySaved -> Timber.d(String.valueOf(moneySaved)));
                 onMoneySavedChanged();
             }
         };

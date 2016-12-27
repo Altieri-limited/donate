@@ -7,6 +7,9 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,13 +23,14 @@ import org.d.App;
 import org.d.R;
 import org.d.data.AppData;
 import org.d.model.MoneySaved;
+import org.d.model.MoneySavedAdapterEntry;
 import org.d.util.DateUtil;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import rx.Observer;
+import static org.d.ui.fragment.MoneyAdapter.UNDO_DELETE_TIMEOUT;
 
 public class MoneyFragment extends Fragment {
 
@@ -54,23 +58,11 @@ public class MoneyFragment extends Fragment {
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mAppData.listSavings(new Observer<ArrayList<MoneySaved>>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(ArrayList<MoneySaved> moneySaved) {
-                mRecyclerView.setAdapter(new MoneyAdapter(app, moneySaved, mDateUtil));
-                setUpItemTouchHelper();
-                setUpAnimationDecoratorHelper();
-            }
+        mAppData.listSavings(moneySavedArray -> {
+            ArrayList<MoneySavedAdapterEntry> moneySaved = new ArrayList<>();
+            mRecyclerView.setAdapter(new MoneyAdapter(app, moneySavedArray, mDateUtil));
+            setUpItemTouchHelper();
+            setUpAnimationDecoratorHelper();
         });
 
         return view;
@@ -121,8 +113,16 @@ public class MoneyFragment extends Fragment {
                 View undo = mRecyclerView.getLayoutManager().findViewByPosition(position).findViewById(R.id.undo);
                 undo.setVisibility(View.VISIBLE);
                 MoneyAdapter adapter = (MoneyAdapter) mRecyclerView.getAdapter();
-                adapter.pendingRemoval(position);
+                Message message = new Message();
+                if (adapter.pendingRemoval(position)) {
+                    mHandler.dispatchMessage();
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        adapter.remove(position);
+                    }, UNDO_DELETE_TIMEOUT);
+                }
             }
+
+            Handler mHandler = new MoneyHandler();
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -241,5 +241,13 @@ public class MoneyFragment extends Fragment {
             }
 
         });
+    }
+
+    static private class MoneyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+
     }
 }
