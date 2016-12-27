@@ -12,6 +12,7 @@ import org.d.R;
 import org.d.data.DataComponent;
 import org.d.model.lycs.Charity;
 import org.d.util.CompatUtil;
+import org.d.util.UiUtil;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,7 @@ public class CharityDetailsFragment extends BaseFragment {
     private static final String CHARITY_ARG = "charity";
     private Charity mCharity;
     @Inject CompatUtil mCompatUtil;
+    @Inject UiUtil mUiUtil;
 
     @BindView(R.id.organization) TextView mOrganization;
     @BindView(R.id.recommendation) TextView mRecommendation;
@@ -48,9 +50,9 @@ public class CharityDetailsFragment extends BaseFragment {
         setRetainInstance(true);
         bind(rootView);
         FragmentActivity activity = getActivity();
-        mOrganization.setText(mCompatUtil.htmlFromHtml(activity, mCharity.getOrganization()));
-        mRecommendation.setText(mCompatUtil.htmlFromHtml(activity, mCharity.getRecommendation()));
-        mEvidence.setText(mCompatUtil.htmlFromHtml(activity, mCharity.getEvidence()));
+        mUiUtil.htmlFromHtml(activity, mOrganization, mCharity.getOrganization());
+        mUiUtil.htmlFromHtml(activity, mRecommendation, mCharity.getRecommendation());
+        mUiUtil.htmlFromHtml(activity, mEvidence, mCharity.getEvidence());
         return rootView;
     }
 }

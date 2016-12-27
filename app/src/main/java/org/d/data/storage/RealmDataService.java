@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -35,8 +36,7 @@ public class RealmDataService implements DataService {
             RealmCharity realmCharity = fromCharity(realm, charity);
             return realmCharity;
         });
-        observable.subscribeOn(Schedulers.io())
-                .subscribe(realmCharity -> Timber.d(realmCharity.getName()));
+        observable.subscribeOn(Schedulers.io()).subscribe(realmCharity -> Timber.d(realmCharity.getName()));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class RealmDataService implements DataService {
             moneySaved.setTime(timeInMillis);
             return moneySaved;
         });
-        observable.subscribeOn(Schedulers.io())
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                 .subscribe(new Observer<RealmMoneySaved>() {
                     @Override
                     public void onCompleted() {
@@ -80,7 +80,7 @@ public class RealmDataService implements DataService {
         RealmCharity realmCharity = realm.createObject(RealmCharity.class, charity.getId());
         realmCharity.set(charity.getName(), charity.getOverhead(), charity.getInfoURL(),
                 charity.getDonateURL(), charity.getLogo(),
-                charity.getDefaultText(), charity.getRecommendation(),
+                charity.getOrganization(), charity.getRecommendation(),
                 charity.getNumbers(), charity.getDefaultText(),
                 charity.getPricePoints());
         return realmCharity;
@@ -90,7 +90,7 @@ public class RealmDataService implements DataService {
         return Charity.create(realmCharity.getName(), realmCharity.getId(),
                 realmCharity.getOverhead(), realmCharity.getInfoURL(),
                 realmCharity.getDonateURL(), realmCharity.getLogo(),
-                realmCharity.getDefaultText(), realmCharity.getRecommendation(),
+                realmCharity.getOrganization(), realmCharity.getRecommendation(),
                 realmCharity.getEvidence(),
                 realmCharity.getNumbers(), realmCharity.getDefaultText(),
                 realmCharity.getPricePoints());
@@ -114,8 +114,8 @@ public class RealmDataService implements DataService {
         });
     }
 
-    private MoneySaved fromRealm(RealmMoneySaved moneSaved) {
-        return new MoneySaved(moneSaved.getMoney(), moneSaved.getTime());
+    private MoneySaved fromRealm(RealmMoneySaved moneySaved) {
+        return new MoneySaved(moneySaved.getMoney(), moneySaved.getTime());
     }
 
 }

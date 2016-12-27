@@ -92,4 +92,7 @@ public class RealmCharity extends RealmObject {
         return pricePoints;
     }
 
+    public String getOrganization() {
+        return mOrganization;
+    }
 }

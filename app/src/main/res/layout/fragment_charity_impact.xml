@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputEditText
+        <org.d.ui.widget.ClearableEditText
             android:id="@+id/money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:hint="@string/impact_edit_hint"
-            android:inputType="number"/>
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"/>
 
     </android.support.design.widget.TextInputLayout>
 

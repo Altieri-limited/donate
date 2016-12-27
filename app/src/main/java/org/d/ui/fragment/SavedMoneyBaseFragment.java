@@ -1,9 +1,11 @@
 package org.d.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.jakewharton.rxbinding.view.RxView;
 
 import org.d.R;
@@ -11,6 +13,9 @@ import org.d.data.AppData;
 import org.d.data.DataComponent;
 import org.d.data.PiggyBank;
 import org.d.model.MoneySaved;
+import org.d.model.lycs.Charity;
+import org.d.ui.activity.CharitiesActivity;
+import org.d.ui.activity.MoneyActivities;
 import org.d.ui.widget.AmountView;
 import org.d.util.ObservableUtil;
 
@@ -28,23 +33,20 @@ import timber.log.Timber;
 
 public abstract class SavedMoneyBaseFragment extends BaseFragment {
     private static final String MONEY_SAVED = "MONEY_SAVED";
-    @Inject protected PublishSubject<Double> mOnAddClickedSubject;
     private Subscription mOnStoreClickedSubscription;
     private Subscription mOnAddClickedSubscription;
     private Subscription mSendMoneySubscription;
+    private Subscription mStoreOperationSubscription;
 
     @Inject protected PiggyBank mPiggyBank;
     @Inject protected AppData mAppData;
+    @Inject PublishSubject<Double> mOnAddClickedSubject;
 
-    @BindView(R.id.fab_save)
-    View mSaveFab;
-
-    @BindView(R.id.fab_send)
-    View mSendFab;
-
-    @BindView(R.id.amount_view)
-    AmountView mMoneySaved;
-    private Subscription mStoreOperationSubscription;
+    @BindView(R.id.fab_menu) FloatingActionMenu mFabMenu;
+    @BindView(R.id.fab_save) View mFabSave;
+    @BindView(R.id.fab_send) View mFabSend;
+    @BindView(R.id.fab_impact) View mFabImpact;
+    @BindView(R.id.amount_view) AmountView mMoneySaved;
 
     public SavedMoneyBaseFragment() {
     }
@@ -94,8 +96,8 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onNext(ArrayList<MoneySaved> moneySaveds) {
-                        Timber.d(String.valueOf(moneySaveds));
+                    public void onNext(ArrayList<MoneySaved> moneySaved) {
+                        Timber.d(String.valueOf(moneySaved));
                     }
                 });
                 onMoneySavedChanged();
@@ -105,12 +107,36 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         BehaviorSubject<Void> subject = BehaviorSubject.create();
         mStoreOperationSubscription = subject.subscribe(observer);
 
-        mOnStoreClickedSubscription = RxView.clicks(mSaveFab).asObservable().subscribe(aVoid -> {
+        mOnStoreClickedSubscription = RxView.clicks(mFabSave).asObservable().subscribe(aVoid -> {
             mPiggyBank.store(subject);
+            mFabMenu.close(true);
+
         });
 
-        mSendMoneySubscription = RxView.clicks(mSendFab).asObservable().subscribe(aVoid -> {
-            Timber.d("send");
+        mSendMoneySubscription = RxView.clicks(mFabSend).asObservable().subscribe(aVoid -> {
+            mPiggyBank.store(subject);
+            mFabMenu.close(true);
+        });
+
+        mSendMoneySubscription = RxView.clicks(mFabImpact).asObservable().subscribe(aVoid -> {
+            mAppData.getCharities(new Observer<ArrayList<Charity>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(ArrayList<Charity> charities) {
+                    Intent intent = new Intent(getActivity(), MoneyActivities.class);
+                    intent.putExtra(CharitiesActivity.CHARITIES_ARG, charities);
+                    startActivity(intent);
+                }
+            });
         });
 
         mOnAddClickedSubscription = new ObservableUtil<Double>().asObservable(mOnAddClickedSubject).subscribe(this::onMoneySavedChanged);
@@ -135,7 +161,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
 
     protected abstract void onMoneySavedChanged(double moneySaved);
 
-    protected void onMoneySavedChanged() {
+    void onMoneySavedChanged() {
         double moneySaved = mPiggyBank.getMoneyToSave();
         if (moneySaved > 0) {
             mMoneySaved.setAmount(moneySaved);

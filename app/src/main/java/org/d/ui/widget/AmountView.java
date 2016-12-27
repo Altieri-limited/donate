@@ -39,15 +39,22 @@ public class AmountView extends RelativeLayout {
         }
     };
 
-    private final Command<Double> ACTIVE = amount -> mAmountSaved.setText(getContext().getString(R.string.money, amount));
+    private final Command<Double> ACTIVE = new Command<Double>() {
+        @Override
+        public void exec(Double amount) {
+            mAmountSaved.setText(getContext().getString(R.string.money, amount));
+        }
+    };
     private Command<Double> mCommand;
 
-    private final Command<Double> CLEARED = amount -> {
-        mCommand = AmountView.this.ACTIVE;
-        mCommand.exec(amount);
-        setVisibility(VISIBLE);
+    private final Command<Double> CLEARED = new Command<Double>() {
+        @Override
+        public void exec(Double amount) {
+            mCommand = AmountView.this.ACTIVE;
+            mCommand.exec(amount);
+            setVisibility(VISIBLE);
+        }
     };
-
 
     public AmountView(Context context, AttributeSet attrs) {
         super(context, attrs);

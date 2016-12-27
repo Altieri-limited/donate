@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/dark_grey"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:gravity="center_horizontal"
+        android:layout_height="@dimen/charity_card_view_height"
+        android:gravity="center"
+        android:padding="@dimen/default_margin"
+        android:background="@color/dark_grey"
         android:orientation="vertical">
-        <ImageView
-            android:id="@+id/charity_image"
+
+        <org.d.ui.wrapper.AppImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="@drawable/ic_clear_36dp"/>
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/default_margin"
+            app:srcCompat="@drawable/ic_gps_not_fixed_black"/>
 
-        <TextView
-            style="@style/Text"
+        <org.d.ui.wrapper.AppTextView
+            style="@style/Text.Small"
             android:id="@+id/charity_name"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             tools:text="name"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>

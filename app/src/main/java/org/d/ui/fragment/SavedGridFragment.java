@@ -20,11 +20,10 @@ import butterknife.OnClick;
 public class SavedGridFragment extends SavedMoneyBaseFragment {
 
     private static final String MONEY_SAVED_OPTION_ARGS = "money_saved_args";
-    public static final int NUM_COLUMNS = 2;
+    static final int NUM_COLUMNS = 2;
     private ArrayList<MoneySavedOption> mMoneySavedOptions;
 
-    @BindView(R.id.options_grid)
-    RecyclerView mOptionsGrid;
+    @BindView(R.id.options_grid) RecyclerView mOptionsGrid;
 
     public SavedGridFragment() {
     }

@@ -3,8 +3,8 @@ package org.d.data.storage;
 import io.realm.RealmObject;
 
 public class RealmMoneySaved extends RealmObject {
-    public final static class FIELDS {
-        public final static String MONEY = "Money";
+    final static class FIELDS {
+        final static String MONEY = "Money";
         final static String TIME = "Time";
     }
 

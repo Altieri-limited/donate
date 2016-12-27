@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +20,7 @@
         android:visibility="invisible"
         tools:visibility="visible">
 
-        <TextView
+        <org.d.ui.wrapper.AppTextView
             android:id="@+id/amount_saved"
             style="@style/Text.Large"
             android:layout_centerVertical="true"
@@ -29,7 +28,7 @@
             android:minEms="5"
             tools:text="£198.8"/>
 
-        <ImageView
+        <org.d.ui.wrapper.AppImageView
             android:id="@+id/back_space_button"
             style="@style/amount_button"
             android:layout_toEndOf="@id/amount_saved"
@@ -37,7 +36,7 @@
             android:contentDescription="@string/back_space"
             app:srcCompat="@drawable/ic_backspace_36dp"/>
 
-        <ImageView
+        <org.d.ui.wrapper.AppImageView
             android:id="@+id/clear_button"
             style="@style/amount_button"
             android:layout_toEndOf="@id/back_space_button"

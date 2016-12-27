@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <android.support.design.widget.CoordinatorLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/snackbar_position"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
@@ -37,7 +36,7 @@
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_calc"
+            android:id="@+id/fab_impact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_add_white_24dp"

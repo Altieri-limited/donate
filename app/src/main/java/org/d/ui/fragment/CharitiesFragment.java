@@ -13,11 +13,10 @@ import org.d.App;
 import org.d.R;
 import org.d.data.AppData;
 import org.d.model.lycs.Charity;
-import org.d.ui.activity.CharityImpactActivity;
+import org.d.ui.activity.CharityActivity;
 import org.d.util.ObservableUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,14 +29,14 @@ import timber.log.Timber;
 
 public class CharitiesFragment extends BaseFragment {
 
-    public static final int NUM_COLUMNS = 3;
+    public static final int NUM_COLUMNS = 2;
     private ArrayList<Charity> mCharities;
     private CharityGridAdapter mAdapter;
     private Subscription mOnCharityClickSubscription;
 
     @Inject AppData mAppData;
-    @Inject PublishSubject<Charity> mOnCharityClickSubject;
-    @Inject ObservableUtil<Charity> mObservableUtil;
+    @Inject PublishSubject<Integer> mOnCharityClickSubject;
+    @Inject ObservableUtil<Integer> mObservableUtil;
 
     @BindView(R.id.charities_grid) RecyclerView mCharitiesGrid;
 
@@ -58,7 +57,7 @@ public class CharitiesFragment extends BaseFragment {
         ((App) getActivity().getApplication()).getDataComponent().inject(this);
         mAdapter = new CharityGridAdapter();
 
-        mAppData.getCharities(new Observer<List<Charity>>() {
+        mAppData.getCharities(new Observer<ArrayList<Charity>>() {
             @Override
             public void onCompleted() {
                 mCharitiesGrid.setAdapter(mAdapter);
@@ -71,9 +70,8 @@ public class CharitiesFragment extends BaseFragment {
             }
 
             @Override
-            public void onNext(List<Charity> charities) {
-                mCharities = new ArrayList<>();
-                mCharities.addAll(charities);
+            public void onNext(ArrayList<Charity> charities) {
+                mCharities = charities;
             }
         });
 
@@ -86,9 +84,11 @@ public class CharitiesFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mOnCharityClickSubscription = mObservableUtil.asObservable(mOnCharityClickSubject).subscribe(charity -> {
-            Intent intent = new Intent(getActivity(), CharityImpactActivity.class);
-            intent.putExtra(CharityImpactActivity.CHARITY_ARG, charity);
+        mOnCharityClickSubscription = mObservableUtil.asObservable(mOnCharityClickSubject).subscribe(pos -> {
+            Intent intent = new Intent(getActivity(), CharityActivity.class);
+            intent.putParcelableArrayListExtra(CharityActivity.CHARITIES_ARG, mCharities);
+            intent.putExtra(CharityActivity.CHARITY_POS, pos);
+
             startActivity(intent);
         });
     }
@@ -114,7 +114,7 @@ public class CharitiesFragment extends BaseFragment {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if ((position >= 0) && (position < mCharities.size())) {
                 Charity charity = mCharities.get(position);
-                ((CharityViewHolder)holder).bind(charity);
+                ((CharityViewHolder)holder).bind(charity, position);
             }
         }
 
@@ -136,12 +136,10 @@ public class CharitiesFragment extends BaseFragment {
                 mItemView.setOnClickListener(view -> {});
             }
 
-            void bind(Charity charity) {
+            void bind(Charity charity, int position) {
                 mCharity = charity;
                 mTextView.setText(charity.getName());
-                mItemView.setOnClickListener(view -> {
-                    mOnCharityClickSubject.onNext(mCharity);
-                });
+                mItemView.setOnClickListener(view -> mOnCharityClickSubject.onNext(position));
             }
 
         }

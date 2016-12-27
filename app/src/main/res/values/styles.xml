@@ -1,24 +1,45 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:textAppearance">@style/Text</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme"/>
+
+    <style name="AppTheme.Dark">
+        <item name="colorPrimary">@color/dark_grey</item>
+        <item name="colorPrimaryDark">@color/dark_grey</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="Text">
+    <style name="Text" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/default_text_color</item>
+    </style>
+
+    <style name="Text.Bold" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/default_text_color</item>
+    </style>
+
+    <style name="Text.Small" parent="TextAppearance.AppCompat.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/default_text_color</item>
@@ -53,10 +74,29 @@
         <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
     </style>
 
+    <style name="ToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:maxLines">2</item>
+
+    </style>
+
+    <style name="ExpandedToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:maxLines">2</item>
+
+    </style>
+
+    <style name="ExpandedToolbarTitleTransparent" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:maxLines">2</item>
+
+    </style>
+
     <declare-styleable name="AppButton">
         <attr name="color" format="color"/>
         <attr name="text" format="string"/>
         <attr name="textDim" format="dimension"/>
         <attr name="buttonDim" format="dimension"/>
     </declare-styleable>
+
 </resources>

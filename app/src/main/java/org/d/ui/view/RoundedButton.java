@@ -14,9 +14,8 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 
 public class RoundedButton extends View {
-    public static final int STROKE_WIDTH = 8;
+    private static final int STROKE_WIDTH = 8;
     private float mTextDimen;
-
     private TextPaint mTextPaint;
     private float mTextWidth;
     private float mTextHeight;
@@ -27,13 +26,13 @@ public class RoundedButton extends View {
     private int mPaddingBottom;
     private Paint mPaint;
     private float mButtonDimen;
-
-    public @BindColor(R.color.colorAccent) int mColor;
     private float mTextX;
     private float mTextY;
     private int mCircleY;
     private int mCircleX;
     private int mRadius;
+
+    @BindColor(R.color.colorAccent) int mColor;
 
     public RoundedButton(Context context, AttributeSet attrs) {
         super(context, attrs);

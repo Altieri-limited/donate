@@ -22,8 +22,10 @@
     <string name="clear">Clear</string>
     <string name="send">Send</string>
     <string name="impact">Impact</string>
-    <string name="title_activity_charity_impact">Impact</string>
-    <string name="action_settings">Settings</string>
     <string name="impact_edit_hint">Donate</string>
-    <string name="cdata"><![CDATA[%s]]></string>
+    <string name="charity_header_image_url">
+        https://www.thelifeyoucansave.org/portals/0/images/charities/header-bg-%1$s.jpg
+    </string>
+    <string name="impact_subtitle">Choose the charity to see the impact</string>
+    <string name="undo">Undo</string>
 </resources>

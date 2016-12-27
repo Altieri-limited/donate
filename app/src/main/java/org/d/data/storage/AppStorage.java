@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -19,7 +18,7 @@ public class AppStorage {
     @NonNull private ArrayList<Charity> mCharities = new ArrayList<>();
     @Inject RealmDataService mRealmDataService;
 
-    AppStorage(RealmDataService realmDataService, Realm realm) {
+    AppStorage(RealmDataService realmDataService) {
         mRealmDataService = realmDataService;
     }
 

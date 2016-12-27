@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp">
+
+    <org.d.ui.wrapper.AppTextView
+        style="@style/Text.Bold"
+        android:id="@+id/title_text_view"
+        android:gravity="center_vertical"
+        android:layout_margin="@dimen/default_margin"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/undo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/undo"
+        android:textAllCaps="true"
+        android:textColor="@color/default_text_color"
+        android:layout_gravity="end|center_vertical"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+</FrameLayout>

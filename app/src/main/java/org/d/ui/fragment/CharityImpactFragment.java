@@ -15,14 +15,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.d.R;
 import org.d.data.DataComponent;
+import org.d.data.PiggyBank;
 import org.d.model.lycs.Charity;
 import org.d.model.lycs.PricePoint;
 import org.d.network.tlycs.TheLifeYouCanSaveHelper;
+import org.d.util.UiUtil;
 
 import java.util.List;
 
@@ -35,6 +38,7 @@ import timber.log.Timber;
 
 public class CharityImpactFragment extends BaseFragment {
     private static final String CHARITY_ARG = "charity";
+    private static final String MONEY = "money_saved";
     private Charity mCharity;
     private Double mMoney = 0.;
 
@@ -42,6 +46,8 @@ public class CharityImpactFragment extends BaseFragment {
     @BindView(R.id.impact_list) RecyclerView mImpactList;
 
     @Inject TheLifeYouCanSaveHelper mTLYCSHelper;
+    @Inject UiUtil mUiUtil;
+    @Inject PiggyBank mPiggyBank;
 
     public static CharityImpactFragment newInstance(Charity charity) {
         CharityImpactFragment fragment = new CharityImpactFragment();
@@ -65,6 +71,12 @@ public class CharityImpactFragment extends BaseFragment {
         setRetainInstance(true);
         bind(rootView);
         mImpactList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mImpactList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                mUiUtil.dismissKeyboard(rootView);
+            }
+        });
         ImpactGridAdapter adapter = new ImpactGridAdapter(mCharity.getPricePoints());
         mImpactList.setAdapter(adapter);
         mMoneyText.addTextChangedListener(new TextWatcher() {
@@ -85,7 +97,21 @@ public class CharityImpactFragment extends BaseFragment {
                 adapter.notifyDataSetChanged();
             }
         });
+        if (savedInstanceState == null) {
+            mPiggyBank.getTotalMoneySaved(money -> {
+                money += mPiggyBank.getMoneyToSave();
+                mMoneyText.setText(String.valueOf(money));
+            });
+        } else {
+            mMoneyText.setText(String.valueOf(savedInstanceState.getDouble(MONEY)));
+        }
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putDouble(MONEY, mMoney);
     }
 
     class ImpactGridAdapter extends RecyclerView.Adapter {
@@ -131,20 +157,24 @@ public class CharityImpactFragment extends BaseFragment {
 
             void bind(PricePoint pricePoint) {
                 mPricePoint = pricePoint;
-                Glide.with(getContext()).load(mTLYCSHelper.getImageUrl(mPricePoint.getIconURL())).asBitmap().into(new SimpleTarget<Bitmap>(mImpactImageSize,mImpactImageSize) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                        mImpactDescription.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(mImpactDescription.getResources(),resource), null, null);
-                    }
+                Glide.with(getContext())
+                        .load(mTLYCSHelper.getImageUrl(mPricePoint.getIconURL()))
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .into(new SimpleTarget<Bitmap>(mImpactImageSize,mImpactImageSize) {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                mImpactDescription.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(mImpactDescription.getResources(),resource), null, null);
+                            }
                 });
                 int amount = (int) (mMoney / pricePoint.getPrice());
-                if (amount > 2) {
+                if (amount >= 2) {
                     try {
                         mImpactDescription.setText(String.format(mPricePoint.getText().getPlural(), amount));
                     } catch (Exception e) {
-                        Timber.e(new IllegalArgumentException(String.format(mPricePoint.getText().getPlural())));
+                        Timber.e(e);
                     }
-                } else if (amount > 1) {
+                } else if (amount >= 1) {
                     mImpactDescription.setText(mPricePoint.getText().getSingle());
                 } else {
                     mImpactDescription.setText(mCharity.getDefaultText());

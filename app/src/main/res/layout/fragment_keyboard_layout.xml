@@ -21,7 +21,7 @@
         android:visibility="invisible"
         tools:visibility="visible">
 
-        <TextView
+        <org.d.ui.wrapper.AppTextView
             android:id="@+id/amount_saved"
             style="@style/Text.Large"
             android:layout_centerVertical="true"
@@ -29,7 +29,7 @@
             android:minEms="5"
             tools:text="£198.8"/>
 
-        <ImageView
+        <org.d.ui.wrapper.AppImageView
             android:id="@+id/back_space_button"
             android:layout_toEndOf="@id/amount_saved"
             android:layout_toRightOf="@id/amount_saved"
@@ -38,7 +38,7 @@
             app:srcCompat="@drawable/ic_backspace_36dp"
             style="@style/amount_button"/>
 
-        <ImageView
+        <org.d.ui.wrapper.AppImageView
             android:id="@+id/clear_button"
             android:layout_toEndOf="@id/back_space_button"
             android:layout_toRightOf="@id/back_space_button"

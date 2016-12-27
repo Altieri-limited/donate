@@ -14,4 +14,5 @@ public class ObservableUtil<T> {
     public Observable<T> asObservable(PublishSubject<T> subject) {
         return subject.asObservable().subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread());
     }
+
 }

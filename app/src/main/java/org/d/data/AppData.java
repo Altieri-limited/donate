@@ -30,7 +30,7 @@ public class AppData {
         mServiceTLYCS = serviceTLYCS;
     }
 
-    public void getCharities(Observer<? super List<Charity>> subscriber) {
+    public void getCharities(Observer<? super ArrayList<Charity>> subscriber) {
         if (mCharities.size() == 0) {
             mAppStorage.getCharities(new Observer<ArrayList<Charity>>() {
                 @Override
@@ -55,7 +55,7 @@ public class AppData {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .map(charitiesObject -> (charitiesObject.getCharities() != null) ? charitiesObject.getCharities() : new ArrayList<Charity>())
                                 .subscribe(charitiesArray -> {
-                                    ArrayList<Charity> androidCharities = new ArrayList<Charity>(charities.size());
+                                    ArrayList<Charity> androidCharities = new ArrayList<>(charities.size());
                                     for (Charity charity: charitiesArray) {
                                         if (charity.getPricePoints()!= null) {
                                             List<PricePoint> pricePoints = new ArrayList<>(charity.getPricePoints().size());

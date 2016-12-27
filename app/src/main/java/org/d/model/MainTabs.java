@@ -5,7 +5,7 @@ import android.support.annotation.StringRes;
 import org.d.R;
 
 public enum MainTabs {
-    GRID(R.string.i_saved), KEYBOARD(R.string.keyboard), IMPACT(R.string.impact), TOTAL(R.string.totals);
+    GRID(R.string.i_saved), KEYBOARD(R.string.keyboard), TOTAL(R.string.totals);
 
     private final @StringRes
     int mTextId;

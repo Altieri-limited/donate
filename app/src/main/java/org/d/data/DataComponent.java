@@ -8,6 +8,7 @@ import org.d.ui.activity.SectionsPagerAdapter;
 import org.d.ui.fragment.CharitiesFragment;
 import org.d.ui.fragment.CharityDetailsFragment;
 import org.d.ui.fragment.CharityImpactFragment;
+import org.d.ui.fragment.MoneyFragment;
 import org.d.ui.fragment.SavedMoneyBaseFragment;
 
 import javax.inject.Singleton;
@@ -22,7 +23,7 @@ public interface DataComponent {
     void inject(CharitiesFragment fragment);
     void inject(CharityImpactFragment fragment);
     void inject(CharityDetailsFragment fragment);
-
+    void inject(MoneyFragment fragment);
     void inject(SectionsPagerAdapter adapter);
 
 }

@@ -17,7 +17,7 @@ public class AppStorageModule {
     @Provides
     @Singleton
     AppStorage provideAppStorage(RealmDataService ds, Realm realm) {
-        return new AppStorage(ds, realm);
+        return new AppStorage(ds);
     }
 
     @Provides

@@ -18,13 +18,13 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'realm-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.2"
+    buildToolsVersion '25.0.0'
+    compileOptions.incremental = false
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -92,15 +92,13 @@ android {
 }
 
 dependencies {
-    apt 'com.google.dagger:dagger-compiler:2.7'
-    compile 'com.google.dagger:dagger:2.7'
-    provided 'javax.annotation:jsr250-api:1.0'
-
-    apt 'com.gabrielittner.auto.value:auto-value-with:1.0.0'
+    def daggerVer = 2.8
+    apt "com.google.dagger:dagger-compiler:$daggerVer"
+    compile "com.google.dagger:dagger:$daggerVer"
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    def supportVersion = '25.0.1'
+    def supportVersion = '25.1.0'
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
     compile "com.android.support:cardview-v7:$supportVersion"
@@ -108,8 +106,6 @@ dependencies {
     compile "com.android.support:support-annotations:$supportVersion"
     compile "com.android.support:gridlayout-v7:$supportVersion"
     compile "com.android.support:support-annotations:$supportVersion"
-
-    compile 'io.reactivex:rxandroid:0.24.0'
 
     def retrofit2 = '2.1.0'
     def okhttp3 = '3.4.1'
@@ -129,24 +125,6 @@ dependencies {
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
 
-    compile 'com.github.clans:fab:1.6.4'
-
-    compile 'io.reactivex:rxjava:1.2.0'
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
-
-    provided 'com.google.auto.value:auto-value:1.2'
-    apt 'com.google.auto.value:auto-value:1.2'
-    compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
-    apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
-    apt 'com.ryanharter.auto.value:auto-value-gson:0.3.2-rc1'
-
-    compile 'com.github.bumptech.glide:glide:3.5.2'
-    compile 'com.jakewharton.timber:timber:4.3.1'
-    compile 'com.google.firebase:firebase-crash:9.4.0'
-    compile 'com.google.firebase:firebase-auth:9.4.0'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'junit:junit:4.12'
     //other dependencies for testing
     def hamcrestVersion = '1.3'
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
@@ -156,7 +134,35 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
+
+    compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
+    apt 'com.gabrielittner.auto.value:auto-value-with:1.0.0'
+    apt 'com.google.auto.value:auto-value:1.2'
+    apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    apt 'com.ryanharter.auto.value:auto-value-gson:0.3.2-rc1'
+    provided 'javax.annotation:jsr250-api:1.0'
+    provided 'com.google.auto.value:auto-value:1.2'
+
+    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+    compile 'com.google.firebase:firebase-auth:9.4.0'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'junit:junit:4.12'
+    compile 'com.github.clans:fab:1.6.4'
+
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 android.packagingOptions {
     exclude 'LICENSE.txt'

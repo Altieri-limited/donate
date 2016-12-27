@@ -8,7 +8,7 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-public final class RealmObservable {
+final class RealmObservable {
     private RealmObservable() {
     }
 

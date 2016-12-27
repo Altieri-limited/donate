@@ -4,7 +4,11 @@ import org.d.util.AppCalendar;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class PiggyBank {
     private AppData mAppData;
@@ -27,6 +31,10 @@ public class PiggyBank {
         }
     }
 
+    public void getTotalMoneySaved(Action1<Double> subscriber) {
+        Observable<Double> observable = mAppData.getTotalPending();
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(subscriber);
+    }
     public void add(double moneySaved) {
         mMoneyToSave += moneySaved;
     }

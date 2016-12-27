@@ -16,9 +16,19 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 
+import javax.inject.Inject;
+
 public class CompatUtil {
+    @Inject Context mContext;
+
+    @Inject
+    public CompatUtil(Context context) {
+        mContext = context;
+    }
+
     public void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            //noinspection deprecation
             v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
         } else {
             v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
@@ -34,14 +44,10 @@ public class CompatUtil {
         }
     }
 
-    public Spanned htmlFromHtml(Context context, String htmlText) {
+    Spanned htmlWithLinkFromHtml(Context context, String htmlText) {
         if (htmlText == null) return null;
         Spanned html;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            html = Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            html = Html.fromHtml(htmlText);
-        }
+        html = htmlWithLinkFromHtml(htmlText);
         SpannableString result = new SpannableString(html);
         Object[] spans = html.getSpans(0, html.length(), URLSpan.class);
         //noinspection ForLoopReplaceableByForEach
@@ -61,5 +67,19 @@ public class CompatUtil {
             }, start, end, 0);
         }
         return result;
+    }
+
+    private Spanned htmlWithLinkFromHtml(String htmlText) {
+        Spanned html;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            html = Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            html = Html.fromHtml(htmlText);
+        }
+        return html;
+    }
+
+    public int getColor(@ColorRes int color) {
+        return ContextCompat.getColor(mContext, color);
     }
 }

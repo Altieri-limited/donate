@@ -1,11 +1,15 @@
 package org.d;
 
 import android.app.Application;
+import android.content.Context;
 
 import org.d.model.lycs.Charity;
+import org.d.util.AndroidUtil;
 import org.d.util.AppCalendar;
 import org.d.util.CompatUtil;
+import org.d.util.DateUtil;
 import org.d.util.ObservableUtil;
+import org.d.util.UiUtil;
 
 import javax.inject.Singleton;
 
@@ -17,7 +21,7 @@ import rx.subjects.PublishSubject;
 @Module
 public class AppModule {
 
-    Application mApplication;
+    private Application mApplication;
 
     public AppModule(Application application) {
         mApplication = application;
@@ -30,6 +34,12 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
+    Context providesContext() {
+        return mApplication.getApplicationContext();
+    }
+
+    @Provides
     AppCalendar providesCalendar() {
         return new AppCalendar();
     }
@@ -37,12 +47,12 @@ public class AppModule {
     @Provides
     @Singleton
     CompatUtil providesCompatUtil() {
-        return new CompatUtil();
+        return new CompatUtil(mApplication);
     }
 
     @Provides
     @Singleton
-    ObservableUtil<Charity> providesObservableUtil() {
+    ObservableUtil<Integer> providesObservableUtil() {
         return new ObservableUtil<>();
     }
 
@@ -62,7 +72,7 @@ public class AppModule {
     }
 
     @Provides
-    PublishSubject<Charity> providesPublishSubjectCharity() {
+    PublishSubject<Integer> providesPublishSubjectInteger() {
         return PublishSubject.create();
     }
 
@@ -75,6 +85,21 @@ public class AppModule {
     @Provides
     BehaviorSubject<Void> providesBehaviorSubjectVoid() {
         return BehaviorSubject.create();
+    }
+
+    @Provides
+    UiUtil providesUiUtil(CompatUtil compatUtil) {
+        return new UiUtil(compatUtil);
+    }
+
+    @Provides
+    DateUtil providesDateUtil(Context context) {
+        return new DateUtil(context);
+    }
+
+    @Provides
+    AndroidUtil providesAndroidUtil(Context context) {
+        return new AndroidUtil(context);
     }
 
 }
