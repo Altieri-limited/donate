@@ -8,9 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,22 +20,20 @@ import android.view.ViewGroup;
 import org.d.App;
 import org.d.R;
 import org.d.data.AppData;
-import org.d.model.MoneySaved;
-import org.d.model.MoneySavedAdapterEntry;
 import org.d.util.DateUtil;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import static org.d.ui.fragment.MoneyAdapter.UNDO_DELETE_TIMEOUT;
+import butterknife.BindView;
+import rx.subjects.PublishSubject;
 
-public class MoneyFragment extends Fragment {
-
+public class MoneyFragment extends BaseFragment {
+    private MoneyHandler mHandler;
+    @BindView(R.id.list) RecyclerView mRecyclerView;
+    private static final long UNDO_DELETE_TIMEOUT = 2000;
     @Inject AppData mAppData;
-
-    private RecyclerView mRecyclerView;
     @Inject DateUtil mDateUtil;
+    @Inject PublishSubject<Message> mUndoSubject;
 
     public MoneyFragment() {
     }
@@ -54,17 +50,24 @@ public class MoneyFragment extends Fragment {
         App app = (App) getActivity().getApplication();
         app.getDataComponent().inject(this);
         app.getAppComponent().inject(this);
-
+        bind(view);
         Context context = view.getContext();
-        mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setHasFixedSize(true);
         mAppData.listSavings(moneySavedArray -> {
-            ArrayList<MoneySavedAdapterEntry> moneySaved = new ArrayList<>();
-            mRecyclerView.setAdapter(new MoneyAdapter(app, moneySavedArray, mDateUtil));
+            MoneyAdapter adapter = new MoneyAdapter(app, moneySavedArray, mUndoSubject);
+            mRecyclerView.setAdapter(adapter);
+            mHandler = new MoneyHandler(mAppData, adapter);
+            mUndoSubject.subscribe(message -> {
+                mHandler.removeMessages(message.what);
+            });
             setUpItemTouchHelper();
             setUpAnimationDecoratorHelper();
         });
 
+        mUndoSubject.subscribe(message -> {
+            mHandler.removeMessages(message.what);
+        });
         return view;
     }
 
@@ -114,15 +117,10 @@ public class MoneyFragment extends Fragment {
                 undo.setVisibility(View.VISIBLE);
                 MoneyAdapter adapter = (MoneyAdapter) mRecyclerView.getAdapter();
                 Message message = new Message();
-                if (adapter.pendingRemoval(position)) {
-                    mHandler.dispatchMessage();
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        adapter.remove(position);
-                    }, UNDO_DELETE_TIMEOUT);
-                }
+                message.what = position;
+                adapter.pendingRemoval(position, message);
+                mHandler.sendMessageDelayed(message, UNDO_DELETE_TIMEOUT);
             }
-
-            Handler mHandler = new MoneyHandler();
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -244,10 +242,28 @@ public class MoneyFragment extends Fragment {
     }
 
     static private class MoneyHandler extends Handler {
+        private AppData mAppData;
+        private MoneyAdapter mAdapter;
+
+        MoneyHandler(AppData appData, MoneyAdapter adapter) {
+            mAppData = appData;
+            mAdapter = adapter;
+        }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            String removed = mAdapter.remove(msg.what);
+            if (removed != null) {
+                mAppData.remove(removed);
+            }
         }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
     }
 }

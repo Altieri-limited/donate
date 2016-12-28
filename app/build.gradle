@@ -139,6 +139,8 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
 
+    compile 'joda-time:joda-time:2.5'
+
     compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
     apt 'com.gabrielittner.auto.value:auto-value-with:1.0.0'
     apt 'com.google.auto.value:auto-value:1.2'

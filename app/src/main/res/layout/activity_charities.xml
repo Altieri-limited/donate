@@ -30,6 +30,7 @@
                 android:id="@+id/charities_header_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/charities_background"/>
 
             <android.support.v7.widget.Toolbar

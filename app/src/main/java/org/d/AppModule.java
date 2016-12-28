@@ -2,6 +2,7 @@ package org.d;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Message;
 
 import org.d.model.lycs.Charity;
 import org.d.util.AndroidUtil;
@@ -63,6 +64,11 @@ public class AppModule {
 
     @Provides
     PublishSubject<Double> providesPublishSubjectDouble() {
+        return PublishSubject.create();
+    }
+
+    @Provides
+    PublishSubject<Message> providesPublishSubjectMessage() {
         return PublishSubject.create();
     }
 

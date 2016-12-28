@@ -33,19 +33,9 @@ public class AppData {
 
     public void getCharities(Observer<? super ArrayList<Charity>> subscriber) {
         if (mCharities.size() == 0) {
-            mAppStorage.getCharities(new Observer<ArrayList<Charity>>() {
+            mAppStorage.getCharities(new Action1<ArrayList<Charity>>() {
                 @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(ArrayList<Charity> charities) {
+                public void call(ArrayList<Charity> charities) {
                     if (charities.size() > 0) {
                         mCharities = charities;
                         subscriber.onNext(mCharities);
@@ -88,7 +78,7 @@ public class AppData {
     }
 
 
-    public void save(double moneySaved, long now, Observer<Void> observer) {
+    public void save(double moneySaved, String now, Observer<Void> observer) {
         mAppStorage.save(moneySaved, now, observer);
     }
 
@@ -98,5 +88,9 @@ public class AppData {
 
     public void listSavings(Action1<ArrayList<MoneySaved>> subscriber) {
         mAppStorage.listSavings(subscriber);
+    }
+
+    public void remove(String timeRemoved) {
+        mAppStorage.removeSaving(timeRemoved);
     }
 }

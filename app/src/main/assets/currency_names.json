@@ -1,34 +1,34 @@
 {
+	"Australian dollar" : "AUD",
+	"Brazilian real" : "BRL",
+	"Bulgarian lev" : "BGN",
+	"Canadian dollar" : "CAD",
+	"Chinese yuan renminbi" : "CNY",
+	"Croatian kuna" : "HRK",
+	"Czech koruna" : "CZK",
+	"Danish krone" : "DKK",
+	"Hong Kong dollar" : "HKD",
+	"Hungarian forint" : "HUF",
+	"Icelandic krona " : "ISK",
+	"Indian rupee" : "INR",
+	"Indonesian rupiah" : "IDR",
+	"Israeli shekel" : "ILS",
+	"Japanese yen" : "JPY",
+	"Malaysian ringgit" : "MYR",
+	"Mexican peso" : "MXN",
+	"New Zealand dollar" : "NZD",
+	"Norwegian krone" : "NOK",
+	"Philippine peso" : "PHP",
+	"Polish zloty" : "PLN",
+	"Pound sterling" : "GBP",
+	"Romanian leu" : "RON",
+	"Russian rouble" : "RUB",
+	"Singapore dollar" : "SGD",
+	"South African rand" : "ZAR",
+	"South Korean won" : "KRW",
+	"Swedish krona" : "SEK",
+	"Swiss franc" : "CHF",
+	"Thai baht" : "THB",
+	"Turkish lira" : "TRY",
 	"US dollar" : "USD"
-	"Japanese yen" : "JPY"
-	"Bulgarian lev" : "BGN"
-	"Czech koruna" : "CZK"
-	"Danish krone" : "DKK"
-	"Pound sterling" : "GBP"
-	"Hungarian forint" : "HUF"
-	"Polish zloty" : "PLN"
-	"Romanian leu" : "RON"
-	"Swedish krona" : "SEK"
-	"Swiss franc" : "CHF"
-	"Norwegian krone" : "NOK"
-	"Croatian kuna" : "HRK"
-	"Russian rouble" : "RUB"
-	"Turkish lira" : "TRY"
-	"Australian dollar" : "AUD"
-	"Brazilian real" : "BRL"
-	"Canadian dollar" : "CAD"
-	"Chinese yuan renminbi" : "CNY"
-	"Hong Kong dollar" : "HKD"
-	"Indonesian rupiah" : "IDR"
-	"Israeli shekel" : "ILS"
-	"Indian rupee" : "INR"
-	"South Korean won" : "KRW"
-	"Mexican peso" : "MXN"
-	"Malaysian ringgit" : "MYR"
-	"New Zealand dollar" : "NZD"
-	"Philippine peso" : "PHP"
-	"Singapore dollar" : "SGD"
-	"Thai baht" : "THB"
-	"South African rand" : "ZAR"
-	"Icelandic krona " : "ISK"
 }

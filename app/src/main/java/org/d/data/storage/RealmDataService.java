@@ -8,6 +8,7 @@ import org.d.model.lycs.Charity;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,11 +41,11 @@ public class RealmDataService implements DataService {
     }
 
     @Override
-    public void storeMoneySaved(double money, long timeInMillis, Observer<Void> observer) {
+    public void storeMoneySaved(double money, String time, Observer<Void> observer) {
         Observable<RealmMoneySaved> observable = RealmObservable.object(realm -> {
             RealmMoneySaved moneySaved = realm.createObject(RealmMoneySaved.class);
             moneySaved.setMoney(money);
-            moneySaved.setTime(timeInMillis);
+            moneySaved.setTime(time);
             return moneySaved;
         });
         observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
@@ -102,6 +103,15 @@ public class RealmDataService implements DataService {
             double total = realm.where(RealmMoneySaved.class).sum(RealmMoneySaved.FIELDS.MONEY).doubleValue();
             return total;
         });
+    }
+
+    @Override
+    public void remove(String timeRemoved) {
+        RealmObservable.results(realm -> {
+            RealmResults<RealmMoneySaved> moneySaved = realm.where(RealmMoneySaved.class).equalTo(RealmMoneySaved.FIELDS.TIME, timeRemoved).findAll();
+            moneySaved.deleteAllFromRealm();
+            return moneySaved;
+        }).subscribe();
     }
 
     public Observable<ArrayList<MoneySaved>> savings() {

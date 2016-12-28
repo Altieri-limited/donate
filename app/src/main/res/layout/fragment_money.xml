@@ -10,22 +10,22 @@
         android:id="@+id/date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/money"
+        android:layout_toStartOf="@id/money"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"/>
 
     <org.d.ui.wrapper.AppTextView
         style="@style/Text"
-        android:id="@+id/money"
-        android:layout_toEndOf="@id/date"
-        android:layout_toRightOf="@id/date"
-        android:layout_toLeftOf="@+id/undo"
-        android:layout_toStartOf="@id/undo"
+        android:id="@id/money"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"/>
 
     <org.d.ui.wrapper.AppTextView
         style="@style/Text"
-        android:id="@id/undo"
+        android:id="@+id/undo"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"

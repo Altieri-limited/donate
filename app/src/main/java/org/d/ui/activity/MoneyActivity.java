@@ -11,7 +11,7 @@ import org.d.ui.HasComponent;
 
 import butterknife.ButterKnife;
 
-public class MoneyActivities extends BaseActivity  implements HasComponent<DataComponent> {
+public class MoneyActivity extends BaseActivity  implements HasComponent<DataComponent> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

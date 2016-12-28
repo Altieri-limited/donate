@@ -12,7 +12,9 @@ public interface DataService {
 
     void storeCharity(Charity charity);
 
-    void storeMoneySaved(double money, long timeInMillis, Observer<Void> observer);
+    void storeMoneySaved(double money, String time, Observer<Void> observer);
 
     Observable<Double> getTotalPending();
+
+    void remove(String timeRemoved);
 }

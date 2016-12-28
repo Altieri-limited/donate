@@ -1,6 +1,7 @@
 package org.d.data;
 
 import org.d.util.AppCalendar;
+import org.d.util.DateUtil;
 
 import javax.inject.Inject;
 
@@ -14,17 +15,20 @@ public class PiggyBank {
     private AppData mAppData;
     private AppCalendar mCalendar;
     private double mMoneyToSave = 0;
+    private DateUtil mDateUtil;
 
     @Inject
-    public PiggyBank(AppData appData, AppCalendar calendar) {
+    public PiggyBank(AppData appData, AppCalendar calendar, DateUtil dateUtil) {
         mAppData = appData;
         mCalendar = calendar;
+        mDateUtil = dateUtil;
     }
 
     public void store(Observer<Void> observer) {
         boolean saved = mMoneyToSave != 0;
         if (saved) {
-            mAppData.save(mMoneyToSave, mCalendar.now(), observer);
+            String now = mDateUtil.getCurrentTimeForDB(mCalendar.now());
+            mAppData.save(mMoneyToSave, now, observer);
             mMoneyToSave = 0;
         } else {
             observer.onCompleted();

@@ -2,9 +2,8 @@
     <string name="tlycs_url" translatable="false">https://www.thelifeyoucansave.org/</string>
 
     <string name="app_name">Donate</string>
-    <string name="i_saved">I Saved</string>
     <string name="keyboard">Keyboard</string>
-    <string name="totals">Totals</string>
+    <string name="saved">Saved</string>
     <string name="money">£%1$,.2f</string>
     <string name="one">1</string>
     <string name="two">2</string>

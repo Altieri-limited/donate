@@ -36,40 +36,30 @@ public class AppStorage {
         return observable;
     }
 
-    public void save(double saved, long timeInMillis, Observer<Void> observer) {
-        mRealmDataService.storeMoneySaved(saved, timeInMillis, observer);
+    public void save(double saved, String dateTime, Observer<Void> observer) {
+        mRealmDataService.storeMoneySaved(saved, dateTime, observer);
     }
 
-    public void getCharities(Observer<? super ArrayList<Charity>> subscriber) {
+    public void getCharities(Action1<? super ArrayList<Charity>> subscriber) {
         if (mCharities.size() == 0) {
-
             Observable<ArrayList<Charity>> observable = mRealmDataService.charities();
             observable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<ArrayList<Charity>>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(ArrayList<Charity> charities) {
-                            mCharities = charities;
-                            subscriber.onNext(mCharities);
-                        }
+                    .subscribe(charities -> {
+                        mCharities = charities;
+                        subscriber.call(mCharities);
                     });
         } else {
-            subscriber.onNext(mCharities);
+            subscriber.call(mCharities);
         }
     }
 
     public void save(ArrayList<Charity> charities) {
         mRealmDataService.storeCharities(charities);
+    }
+
+    public void removeSaving(String timeRemoved) {
+        mRealmDataService.remove(timeRemoved);
     }
 }

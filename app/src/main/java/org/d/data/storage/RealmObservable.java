@@ -5,7 +5,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 final class RealmObservable {
@@ -23,21 +22,6 @@ final class RealmObservable {
             @Override
             public T get(Realm realm) {
                 return function.call(realm);
-            }
-        });
-    }
-
-    /**
-     *
-     * @param action to be performed on the realm database
-     * @return Observable
-     */
-    public static Observable<Void> call(Action1<Realm> action) {
-        return Observable.create(new OnSubscribeRealm<Void>() {
-            @Override
-            public Void get(Realm realm) {
-                action.call(realm);
-                return null;
             }
         });
     }

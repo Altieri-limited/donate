@@ -1,8 +1,7 @@
 package org.d.ui.fragment;
 
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,20 +24,22 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.subjects.PublishSubject;
 
 public class MoneyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private DateUtil mDateUtil;
+    private PublishSubject<Message> mUndoSubject;
     private final ArrayList<MoneySaved> mMoneySavedArray;
-    private ArrayList<Boolean> mItems;
+    private ArrayList<Message> mItems;
     @Inject CompatUtil mCompatUtil;
+    @Inject DateUtil mDateUtil;
 
-    MoneyAdapter(App app, ArrayList<MoneySaved> moneySavedArray, DateUtil dateUtil) {
+    MoneyAdapter(App app, ArrayList<MoneySaved> moneySavedArray, PublishSubject<Message> undoSubject) {
         app.getAppComponent().inject(this);
         mMoneySavedArray = moneySavedArray;
-        mItems = new ArrayList<>(Arrays.asList(new Boolean[mMoneySavedArray.size()]));
-        Collections.fill(mItems, Boolean.FALSE);
-        mDateUtil = dateUtil;
+        mItems = new ArrayList<>(Arrays.asList(new Message[mMoneySavedArray.size()]));
+        Collections.fill(mItems, null);
+        mUndoSubject = undoSubject;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class MoneyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView time = moneyViewHolder.getTime();
         TextView money = moneyViewHolder.getMoney();
         TextView undo = moneyViewHolder.getUndo();
-        if (mItems.get(position)) {
+        if (mItems.get(position) != null) {
             moneyViewHolder.itemView.setBackgroundColor(Color.RED);
             time.setVisibility(View.GONE);
             money.setVisibility(View.GONE);
@@ -76,23 +77,23 @@ public class MoneyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     boolean isPendingRemoval(int position) {
-        return mItems.get(position);
+        return mItems.get(position) != null;
     }
 
-    void pendingRemoval(int position) {
-        mItems.set(position, true);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            if (position < mItems.size() && mItems.get(position)) {
-                remove(position);
-            }
-        }, 2000);
+    void pendingRemoval(int position, Message message) {
+        mItems.set(position, message);
         notifyItemChanged(position);
     }
 
-    private void remove(int position) {
-        mItems.remove(position);
-        mMoneySavedArray.remove(position);
-        notifyItemRemoved(position);
+    String remove(int position) {
+        if (position >=0 && position < mItems.size() && position < mMoneySavedArray.size()) {
+            mItems.remove(position);
+            MoneySaved moneySaved = mMoneySavedArray.get(position);
+            mMoneySavedArray.remove(position);
+            notifyItemRemoved(position);
+            return moneySaved.getTime();
+        }
+        return null;
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -106,8 +107,9 @@ public class MoneyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ButterKnife.bind(this, view);
             RxView.clicks(mUndo).subscribe(aVoid -> {
                 int position = getAdapterPosition();
-                if (position < mItems.size()) {
-                    mItems.set(position, false);
+                if (position  >= 0 && position < mItems.size()) {
+                    mUndoSubject.onNext(mItems.get(position));
+                    mItems.set(position, null);
                     notifyItemChanged(position);
                 }
             });

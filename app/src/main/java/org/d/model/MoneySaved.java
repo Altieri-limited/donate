@@ -5,14 +5,14 @@ import android.os.Parcelable;
 
 public class MoneySaved implements Parcelable {
     private double Money;
-    private long Time;
+    private String Time;
 
     protected MoneySaved(Parcel in) {
         Money = in.readDouble();
-        Time = in.readLong();
+        Time = in.readString();
     }
 
-    public MoneySaved(double money, long time) {
+    public MoneySaved(double money, String time) {
         Money = money;
         Time = time;
     }
@@ -20,7 +20,7 @@ public class MoneySaved implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeDouble(Money);
-        dest.writeLong(Time);
+        dest.writeString(Time);
     }
 
     @Override
@@ -41,18 +41,18 @@ public class MoneySaved implements Parcelable {
     };
 
     public void setMoney(double money) {
-        this.Money = money;
+        Money = money;
     }
 
-    public void setTime(long time) {
-        this.Time = time;
+    public void setTime(String time) {
+        Time = time;
     }
 
     public double getMoney() {
         return Money;
     }
 
-    public long getTime() {
+    public String getTime() {
         return Time;
     }
 

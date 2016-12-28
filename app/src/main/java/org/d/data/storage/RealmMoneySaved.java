@@ -9,7 +9,7 @@ public class RealmMoneySaved extends RealmObject {
     }
 
     private double Money;
-    private long Time;
+    private String Time;
 
     public RealmMoneySaved() {
 
@@ -19,7 +19,7 @@ public class RealmMoneySaved extends RealmObject {
         this.Money = money;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.Time = time;
     }
 
@@ -27,7 +27,7 @@ public class RealmMoneySaved extends RealmObject {
         return Money;
     }
 
-    public long getTime() {
+    public String getTime() {
         return Time;
     }
 

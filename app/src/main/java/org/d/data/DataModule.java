@@ -3,6 +3,7 @@ package org.d.data;
 import org.d.data.storage.AppStorage;
 import org.d.network.tlycs.TheLifeYouCanSaveService;
 import org.d.util.AppCalendar;
+import org.d.util.DateUtil;
 
 import javax.inject.Singleton;
 
@@ -14,8 +15,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public PiggyBank providePiggyBank(AppData appData, AppCalendar calendar) {
-        return new PiggyBank(appData, calendar);
+    public PiggyBank providePiggyBank(AppData appData, AppCalendar calendar, DateUtil dateUtil) {
+        return new PiggyBank(appData, calendar, dateUtil);
     }
 
     @Provides

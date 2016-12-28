@@ -14,7 +14,6 @@ import org.d.data.DataComponent;
 import org.d.data.PiggyBank;
 import org.d.model.lycs.Charity;
 import org.d.ui.activity.CharitiesActivity;
-import org.d.ui.activity.MoneyActivities;
 import org.d.ui.widget.AmountView;
 import org.d.util.ObservableUtil;
 
@@ -28,7 +27,6 @@ import rx.Observer;
 import rx.Subscription;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
-import timber.log.Timber;
 
 public abstract class SavedMoneyBaseFragment extends BaseFragment {
     private static final String MONEY_SAVED = "MONEY_SAVED";
@@ -70,26 +68,8 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Observer<Void> observer = new Observer<Void>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Void aVoid) {
-                mAppData.listSavings(moneySaved -> Timber.d(String.valueOf(moneySaved)));
-                onMoneySavedChanged();
-            }
-        };
-
         BehaviorSubject<Void> subject = BehaviorSubject.create();
-        mStoreOperationSubscription = subject.subscribe(observer);
+        mStoreOperationSubscription = subject.subscribe(aVoid -> onMoneySavedChanged());
 
         mOnStoreClickedSubscription = RxView.clicks(mFabSave).asObservable().subscribe(aVoid -> {
             mPiggyBank.store(subject);
@@ -116,7 +96,7 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
 
                 @Override
                 public void onNext(ArrayList<Charity> charities) {
-                    Intent intent = new Intent(getActivity(), MoneyActivities.class);
+                    Intent intent = new Intent(getActivity(), CharitiesActivity.class);
                     intent.putExtra(CharitiesActivity.CHARITIES_ARG, charities);
                     startActivity(intent);
                 }

@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/dark_grey"
-
-    tools:context="org.d.ui.activity.CharityActivity">
+    android:background="@color/dark_grey">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -30,6 +28,7 @@
                 android:id="@+id/charities_header_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/charities_background"/>
 
             <android.support.v7.widget.Toolbar
