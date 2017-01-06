@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <org.d.ui.widget.AmountView
+        android:id="@+id/amount_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingTop="@dimen/vertical_margin"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <org.d.ui.wrapper.AppTextView
+            android:id="@+id/amount_saved"
+            style="@style/Text.Large"
+            android:layout_centerVertical="true"
+            android:gravity="end"
+            android:minEms="5"
+            tools:text="£198.8"/>
+
+        <org.d.ui.wrapper.AppImageView
+            android:id="@+id/back_space_button"
+            android:layout_toEndOf="@id/amount_saved"
+            android:layout_toRightOf="@id/amount_saved"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/back_space"
+            app:srcCompat="@drawable/ic_backspace_36dp"
+            style="@style/amount_button"/>
+
+        <org.d.ui.wrapper.AppImageView
+            android:id="@+id/clear_button"
+            android:layout_toEndOf="@id/back_space_button"
+            android:layout_toRightOf="@id/back_space_button"
+            android:contentDescription="@string/clear"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_clear_36dp"
+            style="@style/amount_button"/>
+
+    </org.d.ui.widget.AmountView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="org.d.ui.fragment.MoneyFragment"
+        android:layout_below="@id/amount_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="org.d.ui.fragment.MoneyFragment"
+        tools:listitem="@layout/fragment_money"/>
+
+        <include layout="@layout/include_fab_menu"/>
+
+</RelativeLayout>

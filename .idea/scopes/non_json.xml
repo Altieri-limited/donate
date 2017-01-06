@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="non-json" pattern="!file:*.json" />
+</component>

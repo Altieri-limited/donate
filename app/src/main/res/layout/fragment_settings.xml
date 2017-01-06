@@ -1,0 +1,16 @@
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/region">
+
+        <android.support.v7.preference.ListPreference
+            android:key="key1"
+            android:summary="Switch Summary"
+            android:defaultValue="true" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>

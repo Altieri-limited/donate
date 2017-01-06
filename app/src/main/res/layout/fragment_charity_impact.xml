@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="org.d.ui.activity.MainActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/money_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <org.d.ui.widget.ClearableEditText
+            android:id="@+id/money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint="@string/impact_edit_hint"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/impact_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/money_layout"/>
+
+</RelativeLayout>

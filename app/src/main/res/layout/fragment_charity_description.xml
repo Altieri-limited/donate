@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/default_margin">
+
+    <org.d.ui.wrapper.AppTextView
+        style="@style/Text.Dark"
+        android:id="@+id/organization"
+        android:layout_width="match_parent"/>
+
+    <org.d.ui.wrapper.AppTextView
+        style="@style/Text.Dark"
+        android:id="@+id/recommendation"
+        android:layout_width="match_parent"/>
+
+    <org.d.ui.wrapper.AppTextView
+        style="@style/Text.Dark"
+        android:id="@+id/evidence"
+        android:layout_width="match_parent"/>
+
+</LinearLayout>

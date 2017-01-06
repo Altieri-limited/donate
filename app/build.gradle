@@ -1,0 +1,174 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.3.1'
+    }
+}
+
+plugins {
+    id "me.tatarka.retrolambda" version "3.3.1"
+}
+
+// Required because retrolambda is on maven central
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+    compileOptions.incremental = false
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "org.d"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        jackOptions {
+            enabled false
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        dexOptions {
+            preDexLibraries = false
+            javaMaxHeapSize "4g"
+        }
+
+    }
+
+    compileOptions {
+        incremental true
+    }
+
+    /**
+     * Signing keys config.
+     */
+    signingConfigs {
+        debug {
+            storeFile file("ddebug.keystore")
+            keyAlias "ddebug"
+            storePassword "07477800086d!"
+            keyPassword "07477800086d!"
+        }
+        release {
+            storeFile file("drelease.keystore")
+            keyAlias "drelease"
+            storePassword "07477800086d!"
+            keyPassword "07477800086d!"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            renderscriptDebuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            versionNameSuffix "_dev"
+        }
+
+    }
+}
+
+dependencies {
+    def daggerVer = 2.8
+    apt "com.google.dagger:dagger-compiler:$daggerVer"
+    compile "com.google.dagger:dagger:$daggerVer"
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    def supportVersion = '25.1.0'
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:support-annotations:$supportVersion"
+    compile "com.android.support:gridlayout-v7:$supportVersion"
+    compile "com.android.support:support-annotations:$supportVersion"
+    compile "com.android.support:preference-v7:$supportVersion"
+
+    def retrofit2 = '2.1.0'
+    def okhttp3 = '3.4.1'
+    compile "com.squareup.retrofit2:retrofit:$retrofit2"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit2"
+    compile "com.squareup.okhttp3:okhttp:$okhttp3"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttp3"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp3"
+
+    def butter_knife = '8.4.0'
+    apt "com.jakewharton:butterknife-compiler:$butter_knife"
+    compile "com.jakewharton:butterknife:$butter_knife"
+
+    def leak_canary = '1.4-beta2'
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leak_canary"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary"
+
+    //other dependencies for testing
+    def hamcrestVersion = '1.3'
+    testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
+    testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    testCompile "org.hamcrest:hamcrest-integration:$hamcrestVersion"
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
+
+    compile 'joda-time:joda-time:2.5'
+
+    compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
+    apt 'com.gabrielittner.auto.value:auto-value-with:1.0.0'
+    apt 'com.google.auto.value:auto-value:1.2'
+    apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    apt 'com.ryanharter.auto.value:auto-value-gson:0.3.2-rc1'
+    provided 'javax.annotation:jsr250-api:1.0'
+    provided 'com.google.auto.value:auto-value:1.2'
+
+    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+    compile 'com.google.firebase:firebase-auth:9.4.0'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'junit:junit:4.12'
+    compile 'com.github.clans:fab:1.6.4'
+
+}
+
+apply plugin: 'com.google.gms.google-services'
+
+android.packagingOptions {
+    exclude 'LICENSE.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
+}
