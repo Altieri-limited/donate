@@ -1,9 +1,10 @@
 <resources>
     <string name="tlycs_url" translatable="false">https://www.thelifeyoucansave.org/</string>
 
-    <string name="app_name">Donate</string>
+    <string name="app_name">Wiity</string>
     <string name="keyboard">Keyboard</string>
     <string name="saved">Saved</string>
+    <string name="region">Region</string>
     <string name="money">£%1$,.2f</string>
     <string name="one">1</string>
     <string name="two">2</string>

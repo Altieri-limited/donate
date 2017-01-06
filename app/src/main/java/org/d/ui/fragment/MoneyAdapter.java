@@ -29,14 +29,14 @@ import rx.subjects.PublishSubject;
 public class MoneyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private PublishSubject<Message> mUndoSubject;
-    private final ArrayList<MoneySaved> mMoneySavedArray;
+    private ArrayList<MoneySaved> mMoneySavedArray;
     private ArrayList<Message> mItems;
     @Inject CompatUtil mCompatUtil;
     @Inject DateUtil mDateUtil;
 
-    MoneyAdapter(App app, ArrayList<MoneySaved> moneySavedArray, PublishSubject<Message> undoSubject) {
+    MoneyAdapter(App app, PublishSubject<Message> undoSubject) {
         app.getAppComponent().inject(this);
-        mMoneySavedArray = moneySavedArray;
+        mMoneySavedArray = new ArrayList<>();
         mItems = new ArrayList<>(Arrays.asList(new Message[mMoneySavedArray.size()]));
         Collections.fill(mItems, null);
         mUndoSubject = undoSubject;
@@ -94,6 +94,13 @@ public class MoneyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             return moneySaved.getTime();
         }
         return null;
+    }
+
+    void init(ArrayList<MoneySaved> moneySavedArray) {
+        mMoneySavedArray = moneySavedArray;
+        mItems = new ArrayList<>(Arrays.asList(new Message[mMoneySavedArray.size()]));
+        Collections.fill(mItems, null);
+        notifyDataSetChanged();
     }
 
     @SuppressWarnings("WeakerAccess")

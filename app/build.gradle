@@ -23,7 +23,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     compileOptions.incremental = false
 
     compileOptions {
@@ -106,6 +106,7 @@ dependencies {
     compile "com.android.support:support-annotations:$supportVersion"
     compile "com.android.support:gridlayout-v7:$supportVersion"
     compile "com.android.support:support-annotations:$supportVersion"
+    compile "com.android.support:preference-v7:$supportVersion"
 
     def retrofit2 = '2.1.0'
     def okhttp3 = '3.4.1'

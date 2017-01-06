@@ -139,4 +139,8 @@ public abstract class SavedMoneyBaseFragment extends BaseFragment {
         super.onSaveInstanceState(outState);
         outState.putDouble(MONEY_SAVED, mPiggyBank.getMoneyToSave());
     }
+
+    public void update() {
+        onMoneySavedChanged();
+    }
 }

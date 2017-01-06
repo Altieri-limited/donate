@@ -50,21 +50,15 @@
         android:layout_height="match_parent"
         android:layout_gravity="end">
 
-        <android.support.v7.widget.GridLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:name="org.d.ui.fragment.MoneyFragment"
+            android:layout_gravity="end"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:alignmentMode="alignBounds"
-            app:columnCount="3"
-            app:columnOrderPreserved="true"
-            app:layout_columnWeight="3"
-            app:layout_rowWeight="4"
-            app:rowCount="4"
-            app:useDefaultMargins="true"
-            tools:showIn="@layout/fragment_keyboard_layout">
-
-            <include layout="@layout/include_keys_layout"/>
-
-        </android.support.v7.widget.GridLayout>
+            app:layoutManager="LinearLayoutManager"
+            tools:context="org.d.ui.fragment.MoneyFragment"
+            tools:listitem="@layout/fragment_money"/>
 
         <include layout="@layout/include_fab_menu"/>
 

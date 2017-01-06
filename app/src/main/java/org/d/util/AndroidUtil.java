@@ -18,18 +18,18 @@ public class AndroidUtil {
     }
 
     public String loadStringFromAsset(String filename) {
-        String json;
+        String string;
         try {
             InputStream is = mContext.getAssets().open(filename);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            json = new String(buffer, "UTF-8");
+            string = new String(buffer, "UTF-8");
         } catch (IOException ex) {
             Timber.e(ex, "Exception reading asset file = %1$s", filename);
             return null;
         }
-        return json;
+        return string;
     }
 }

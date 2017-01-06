@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,14 +21,17 @@ import android.view.ViewGroup;
 import org.d.App;
 import org.d.R;
 import org.d.data.AppData;
+import org.d.data.DataComponent;
 import org.d.util.DateUtil;
+
+import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import rx.subjects.PublishSubject;
 
-public class MoneyFragment extends BaseFragment {
+public class MoneyFragment extends SavedMoneyBaseFragment {
     private MoneyHandler mHandler;
     @BindView(R.id.list) RecyclerView mRecyclerView;
     private static final long UNDO_DELETE_TIMEOUT = 2000;
@@ -36,6 +40,17 @@ public class MoneyFragment extends BaseFragment {
     @Inject PublishSubject<Message> mUndoSubject;
 
     public MoneyFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getComponent(DataComponent.class).inject(this);
+    }
+
+    @Override
+    protected void onMoneySavedChanged(double moneySaved) {
+
     }
 
     @SuppressWarnings("unused")
@@ -48,14 +63,12 @@ public class MoneyFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_money_list, container, false);
         App app = (App) getActivity().getApplication();
-        app.getDataComponent().inject(this);
-        app.getAppComponent().inject(this);
         bind(view);
         Context context = view.getContext();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setHasFixedSize(true);
         mAppData.listSavings(moneySavedArray -> {
-            MoneyAdapter adapter = new MoneyAdapter(app, moneySavedArray, mUndoSubject);
+            MoneyAdapter adapter = new MoneyAdapter(app, mUndoSubject);
             mRecyclerView.setAdapter(adapter);
             mHandler = new MoneyHandler(mAppData, adapter);
             mUndoSubject.subscribe(message -> {
@@ -63,12 +76,21 @@ public class MoneyFragment extends BaseFragment {
             });
             setUpItemTouchHelper();
             setUpAnimationDecoratorHelper();
+            update();
         });
 
         mUndoSubject.subscribe(message -> {
             mHandler.removeMessages(message.what);
         });
         return view;
+    }
+
+    public void update() {
+        super.update();
+        MoneyAdapter adapter = (MoneyAdapter) mRecyclerView.getAdapter();
+        if (adapter != null) {
+            mAppData.listSavings(adapter::init);
+        }
     }
 
     /**
@@ -243,19 +265,22 @@ public class MoneyFragment extends BaseFragment {
 
     static private class MoneyHandler extends Handler {
         private AppData mAppData;
-        private MoneyAdapter mAdapter;
+        private WeakReference<MoneyAdapter> mAdapter;
 
         MoneyHandler(AppData appData, MoneyAdapter adapter) {
             mAppData = appData;
-            mAdapter = adapter;
+            mAdapter = new WeakReference<>(adapter);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String removed = mAdapter.remove(msg.what);
-            if (removed != null) {
-                mAppData.remove(removed);
+            MoneyAdapter moneyAdapter = mAdapter.get();
+            if (moneyAdapter != null) {
+                String removed = moneyAdapter.remove(msg.what);
+                if (removed != null) {
+                    mAppData.remove(removed);
+                }
             }
         }
 

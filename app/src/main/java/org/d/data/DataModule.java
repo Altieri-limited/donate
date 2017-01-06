@@ -15,13 +15,13 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public PiggyBank providePiggyBank(AppData appData, AppCalendar calendar, DateUtil dateUtil) {
+    public PiggyBank providesPiggyBank(AppData appData, AppCalendar calendar, DateUtil dateUtil) {
         return new PiggyBank(appData, calendar, dateUtil);
     }
 
     @Provides
     @Singleton
-    public AppData provideData(AppStorage appStorage, TheLifeYouCanSaveService serviceTLYCS) {
+    public AppData providesData(AppStorage appStorage, TheLifeYouCanSaveService serviceTLYCS) {
         return new AppData(appStorage, serviceTLYCS);
     }
 
